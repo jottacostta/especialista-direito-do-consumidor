@@ -1,36 +1,49 @@
-# Assistente de Apoio à Gestão de Incidentes em Supermercados
+# Guia de atendimento e consulta ao CDC para supermercados
 
-Projeto em fase de especificação para apoiar gerentes de supermercados na prevenção de perdas, verificação de discrepâncias e tratamento respeitoso de incidentes envolvendo consumidores. O nome de trabalho do produto ainda pode mudar; o nome do repositório não foi alterado.
+Repositório privado com um **protótipo local informativo** para apoiar gerentes na consulta de regras do Código de Defesa do Consumidor em situações comuns de supermercado. A interface usa HTML/CSS/JavaScript e conversa com um backend Python que vincula os resumos ao catálogo legislativo do projeto.
 
-> **Estado atual:** há documentação de produto e um catálogo legal preliminar. A aplicação ainda não existe. O catálogo inclui uma auditoria de 39 leis estaduais e municipais do Rio de Janeiro, mas não é exaustivo nem constitui validação jurídica para uso operacional.
+> **Escopo:** consulta de referência somente para leitura. O protótipo não registra incidentes, não coleta dados de clientes, não conclui má-fé ou culpa e não substitui revisão humana ou orientação jurídica.
 
-## Princípios do produto
+## Executar localmente
 
-- **Fatos antes de conclusões:** registrar comportamentos e discrepâncias observáveis; não presumir intenção nem chamar clientes de criminosos.
-- **Prevenção justa:** verificar primeiro erros de sistema, caixa, cadastro, preço, leitura, treinamento ou processo; aplicar procedimentos iguais a todas as pessoas.
-- **Revisão humana:** não automatizar acusação, busca, retenção, recusa de serviço, banimento ou chamada às autoridades.
-- **Privacidade:** coletar o mínimo necessário; não criar score de clientes, listas negras, reconhecimento facial/biométrico ou rastreamento entre lojas.
-- **Fontes confiáveis:** quando tratar de direitos do consumidor ou obrigações legais, usar fontes oficiais e declarar incertezas.
+Requer Python 3.10 ou superior. Não há dependências externas nem banco de dados.
 
-## Escopo técnico planejado
+```bash
+python3 -m backend.server
+```
 
-A interface futura poderá usar HTML, CSS e JavaScript, com backend Python. Framework, armazenamento, autenticação e hospedagem ainda precisam ser definidos após a revisão dos requisitos de segurança e privacidade. Não há código de aplicação neste branch.
+Acesse `http://127.0.0.1:8000`. Para outra porta, use `python3 -m backend.server --port 8080`. O servidor só escuta em `127.0.0.1`, não deve ser exposto à rede ou usado em produção e encerra com `Ctrl+C`.
 
-## Documentos
+## Como funciona
 
-- `docs/requisitos-produto.md` — público, casos de uso, limites e decisões pendentes.
-- `docs/escopo-e-seguranca.md` — regras de tratamento de incidentes, privacidade e salvaguardas.
-- `prompts/instrucao-base.md` — comportamento esperado do assistente futuro.
-- `docs/roteiro.md` — etapas para validação antes de qualquer implementação.
-- `docs/RETOMADA_CHATGPT.md` — estado do repositório e contexto de continuidade.
-- `docs/auditoria-rj-2026-11-01.md` — auditoria e fontes das 39 leis do RJ selecionadas.
-- `legislacao/` — catálogo de legislação e URLs oficiais.
-- `scripts/validate_legislation.py` — validação local dos índices legais.
+A interface permite pesquisar e filtrar guias sobre preço e oferta, peso/quantidade, validade e segurança de produtos, troca/desistência, práticas comerciais/atendimento e cobrança/pagamentos. A API Python valida e lê a entrada federal da Lei nº 8.078/1990 no catálogo JSONL antes de fornecer as regras. O status e a data mostrados são os que estão registrados no catálogo e não são atualizados automaticamente.
 
-## Próximo passo
+A aplicação falha de forma fechada: não serve o guia se encontrar entrada ausente ou duplicada, JSON malformado, fonte não HTTPS ou status diferente de `vigente`. O servidor não tem rotas para gravar dados, não salva buscas e não registra URLs consultadas. Os resumos são uma camada editorial limitada; consulte a fonte oficial e as ressalvas em [`docs/integracao-cdc.md`](docs/integracao-cdc.md).
 
-Revisar os casos de uso, as salvaguardas e as decisões pendentes com pessoas responsáveis por operação, segurança, privacidade e aconselhamento jurídico no Brasil. Só depois dessa revisão definir requisitos técnicos detalhados e iniciar o protótipo, usando exclusivamente dados sintéticos durante o desenvolvimento.
+## Verificações
 
-## Aviso
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m py_compile backend/catalog.py backend/server.py scripts/validate_legislation.py
+node --check frontend/app.js
+python3 scripts/validate_legislation.py --strict-duplicates
+```
 
-O projeto é uma especificação preliminar. Não substitui políticas internas aprovadas, profissionais de segurança, aconselhamento jurídico ou procedimentos de emergência. O sistema futuro deve apoiar decisões humanas justas; não deve determinar culpa ou intenção de consumidores.
+O workflow do GitHub executa essas verificações em Pull Requests.
+
+## Catálogo legislativo
+
+`legislacao/` contém 229 registros preliminares em 16 índices JSONL, sem duplicatas na última validação. O levantamento é seletivo, não exaustivo e não equivale à confirmação profissional da vigência de cada ato. A auditoria do Rio de Janeiro está em [`docs/auditoria-rj-2026-11-01.md`](docs/auditoria-rj-2026-11-01.md).
+
+## Documentação
+
+- [`docs/integracao-cdc.md`](docs/integracao-cdc.md) — arquitetura, referências, execução e limites da consulta.
+- [`docs/requisitos-produto.md`](docs/requisitos-produto.md) — escopo maior do produto e itens ainda não implementados.
+- [`docs/escopo-e-seguranca.md`](docs/escopo-e-seguranca.md) — salvaguardas, privacidade e segurança.
+- [`docs/roteiro.md`](docs/roteiro.md) — próximos passos de revisão e validação.
+- [`docs/RETOMADA_CHATGPT.md`](docs/RETOMADA_CHATGPT.md) — estado técnico e continuidade.
+- [`legislacao/`](legislacao/) — catálogo legal e fontes oficiais.
+
+## Próximas revisões
+
+Revisar os resumos com profissional habilitado em direito do consumidor e responsáveis por operação e privacidade. Antes de qualquer publicação, compartilhamento em rede ou uso com casos reais, definir autenticação, autorização, segurança, governança, retenção e resposta a incidentes. Essas capacidades não fazem parte deste protótipo.

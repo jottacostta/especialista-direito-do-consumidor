@@ -1,8 +1,10 @@
 # Requisitos de produto — apoio à gestão de incidentes em supermercados
 
-- **Estado:** especificação preliminar; nenhum código de aplicação foi iniciado.
+- **Estado:** há um protótipo local de consulta informativa ao CDC; os fluxos de incidentes e as demais capacidades do produto seguem em especificação.
 - **Público principal:** gerentes e supervisores de supermercados, com participação de equipes autorizadas e treinadas.
 - **Stack pretendida:** frontend HTML/CSS/JavaScript e backend Python; framework e infraestrutura ainda não definidos.
+
+O protótipo atual tem interface de consulta somente de leitura e uma API Python que vincula seis resumos temáticos ao registro federal da Lei nº 8.078/1990 no catálogo. Não inclui autenticação, cadastro de casos, armazenamento, integração com sistemas da loja ou inteligência artificial. A revisão dos resumos por profissional habilitado ainda está pendente. Consulte `docs/integracao-cdc.md`.
 
 ## Objetivo
 

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "preco-e-oferta",
+    "title": "Preço, etiqueta e oferta",
+    "category": "Preço e oferta",
+    "articles": ["arts. 6º, III; 30; 31; 35"],
+    "summary": "O CDC assegura informação adequada e clara. Uma oferta suficientemente precisa vincula o fornecedor; se ela não for cumprida, o art. 35 prevê alternativas para o consumidor, conforme os fatos e os requisitos legais.",
+    "when_applicable": "Diferença entre etiqueta, anúncio, condição promocional e valor lançado no caixa; dúvida sobre identificação do produto ou regras da oferta.",
+    "checklist": [
+      "Confirme se etiqueta, anúncio e produto se referem ao mesmo item, tamanho, unidade e período.",
+      "Leia as condições da promoção e verifique se estão visíveis e se o produto se enquadra nelas.",
+      "Compare o preço informado ao consumidor com o preço registrado no caixa e confira cadastro ou atualização pendente.",
+      "Se houver divergência, pause a conclusão, corrija eventual erro da loja e consulte a política aprovada para resolver a oferta."
+    ],
+    "safe_response": "Vou conferir a etiqueta, as condições da oferta e o valor registrado. Se houver divergência, vamos verificar e corrigir conforme a regra aplicável.",
+    "caution": "Não presuma fraude do consumidor nem prometa uma solução antes de confirmar o produto, a oferta, as condições e a legislação aplicável."
+  },
+  {
+    "id": "peso-medida-quantidade",
+    "title": "Peso, medida e quantidade",
+    "category": "Produto e quantidade",
+    "articles": ["arts. 18; 19; 26"],
+    "summary": "Os arts. 18 e 19 tratam de vícios de qualidade ou quantidade e estabelecem alternativas legais para o consumidor. O art. 19 considera, entre outros pontos, conteúdo líquido inferior ao informado, respeitadas as variações próprias do produto.",
+    "when_applicable": "Dúvida sobre peso, quantidade, unidade de medida, tara, embalagem ou divergência entre o conteúdo e a informação apresentada.",
+    "checklist": [
+      "Confirme unidade, tara, cadastro do item e se a balança está funcionando e dentro do procedimento de aferição da loja.",
+      "Verifique embalagem, etiqueta e informação de conteúdo líquido sem alterar ou descartar o produto discutido.",
+      "Consulte registros operacionais e a pessoa responsável antes de atribuir a origem da diferença.",
+      "Registre apenas os fatos e o instrumento/processo conferidos, sem identificar ou perfilar o consumidor."
+    ],
+    "safe_response": "Vamos conferir juntos a unidade, a pesagem e as informações da embalagem. Ainda não temos elementos para atribuir a causa da diferença.",
+    "caution": "A aplicação de prazos e alternativas depende do tipo de vício, da data e das circunstâncias. Não trate uma diferença de pesagem como prova de conduta intencional."
+  },
+  {
+    "id": "produto-improprio-seguranca",
+    "title": "Validade, conservação e segurança do produto",
+    "category": "Produto e validade",
+    "articles": ["arts. 6º, I; 8º; 18, § 6º; 26"],
+    "summary": "O CDC protege a vida, a saúde e a segurança. O art. 18, § 6º, inclui entre os produtos impróprios aqueles com prazo de validade vencido e outros que se revelem inadequados, perigosos ou nocivos nas condições previstas em lei.",
+    "when_applicable": "Relato ou observação sobre prazo de validade, embalagem, conservação, contaminação, avaria ou risco à saúde.",
+    "checklist": [
+      "Confira produto, lote, validade, embalagem e condições de exposição/conservação.",
+      "Siga o procedimento interno aprovado para separar preventivamente o item e comunicar a liderança responsável.",
+      "Verifique se há outros itens do mesmo lote ou exposição envolvidos e preserve somente registros operacionais necessários.",
+      "Encaminhe dúvidas de segurança alimentar ou risco à saúde ao responsável técnico e aos canais internos definidos."
+    ],
+    "safe_response": "Obrigado por avisar. Vamos verificar o produto e a condição de conservação agora e encaminhar a situação à pessoa responsável.",
+    "caution": "Não minimize um possível risco nem atribua culpa. A análise desta tela não substitui avaliação sanitária, técnica ou jurídica."
+  },
+  {
+    "id": "troca-desistencia",
+    "title": "Troca, vício e direito de desistência",
+    "category": "Troca e devolução",
+    "articles": ["arts. 18; 26; 30; 35; 49"],
+    "summary": "O CDC disciplina soluções para produtos com vício e o cumprimento de ofertas. O art. 49 prevê prazo de sete dias para desistência nos contratos celebrados fora do estabelecimento comercial, conforme o caso. Essa regra não deve ser confundida com um direito geral de troca em loja física apenas por mudança de ideia.",
+    "when_applicable": "Pedido de troca ou devolução por defeito, divergência com a oferta, arrependimento ou política voluntária da loja.",
+    "checklist": [
+      "Identifique o motivo do pedido sem contestar ou presumir intenção.",
+      "Confira se há vício, oferta aplicável ou política da loja que tenha sido informada ao consumidor.",
+      "Se a compra foi feita fora do estabelecimento, verifique data, forma de contratação e os requisitos do art. 49.",
+      "Encaminhe casos de produto essencial, perecível, risco à saúde ou dúvida sobre prazo à liderança ou assessoria competente."
+    ],
+    "safe_response": "Vou verificar o motivo do pedido, as informações da oferta e a política aplicável. Se houver dúvida sobre o direito ou o prazo, chamarei a liderança responsável.",
+    "caution": "Não use uma regra geral para negar ou prometer a troca. Tipo de vício, forma da compra, oferta, política informada e outras normas podem alterar a análise."
+  },
+  {
+    "id": "praticas-comerciais-atendimento",
+    "title": "Práticas comerciais e atendimento respeitoso",
+    "category": "Atendimento e práticas comerciais",
+    "articles": ["arts. 4º; 6º, II e IV; 39; 51"],
+    "summary": "O CDC prevê transparência, boa-fé e equilíbrio nas relações de consumo e enumera práticas vedadas ao fornecedor. A aplicação depende do comportamento concreto e do texto legal; esta consulta não classifica a conduta de uma pessoa consumidora.",
+    "when_applicable": "Dúvida sobre informação, condição de venda, tratamento de uma reclamação, recusa de atendimento ou aplicação de regra da loja.",
+    "checklist": [
+      "Aplique critérios de preço, promoção e atendimento de forma consistente e sem discriminação.",
+      "Confirme se existe estoque, condição da oferta ou regra interna realmente aplicável antes de responder.",
+      "Evite pressão, constrangimento, exposição pública ou retaliação por uma reclamação.",
+      "Se houver dúvida sobre prática comercial, consulte a política aprovada e a assessoria responsável."
+    ],
+    "safe_response": "Vou conferir a informação e a regra da loja antes de responder. Você pode explicar o que aconteceu enquanto verificamos os registros pertinentes.",
+    "caution": "O art. 39 se dirige a práticas do fornecedor. Não use esta seção para rotular clientes, inferir má-fé ou justificar recusa de venda sem base verificada."
+  },
+  {
+    "id": "cobranca-sem-constrangimento",
+    "title": "Cobrança sem ameaça ou exposição",
+    "category": "Cobrança e pagamentos",
+    "articles": ["arts. 42; 71"],
+    "summary": "O art. 42 protege a pessoa consumidora contra exposição ao ridículo, constrangimento ou ameaça na cobrança. Seu parágrafo único prevê repetição em dobro do indébito em condições legais, salvo hipótese de engano justificável. O art. 71 trata de determinadas condutas de cobrança ilícitas; esta tela não conclui que houve crime.",
+    "when_applicable": "Divergência de pagamento, cobrança questionada, valor lançado duas vezes ou discussão sobre devolução de valor.",
+    "checklist": [
+      "Confira comprovante, cupom, transação e registros do caixa antes de afirmar que há saldo devido.",
+      "Converse em local discreto e em tom neutro, sem ameaça, pressão ou exposição perante outros clientes.",
+      "Se o sistema ou a transação não permitirem confirmar o valor, suspenda a conclusão e chame a liderança.",
+      "Registre o resultado operacional sem guardar dados completos de cartão, conta ou documento."
+    ],
+    "safe_response": "Vamos conferir o comprovante e o registro do pagamento em particular. Se não conseguirmos confirmar o valor agora, encaminharei à liderança.",
+    "caution": "Não cobre quantia incerta nem decida devolução em dobro sem verificar os requisitos legais e os fatos; encaminhe dúvidas à assessoria competente."
+  }
+]

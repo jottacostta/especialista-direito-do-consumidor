@@ -1,31 +1,40 @@
 # Retomada do projeto — para ChatGPT
 
-Atualizado em 2026-11-01. Este documento resume o estado do trabalho e registra que o escopo de produto foi atualizado; nenhuma aplicação foi codificada.
+Atualizado em 2026-11-01. A `main` já inclui o merge do PR #1. A aplicação está sendo trabalhada em `feature/prototipo-consulta-cdc`, criado sobre o commit `e727abf` de `origin/main`; conferir o estado Git e os PRs antes de continuar.
 
-## Objetivo atual
+## Objetivo e estágio
 
-O projeto está sendo especificado como uma aplicação web para apoiar gerentes e supervisores de supermercados na prevenção de perdas, verificação de discrepâncias e documentação de incidentes. A assistência deve se basear em fatos observáveis, processos consistentes e revisão humana. Não deve presumir má-fé, avaliar caráter ou decidir culpa de consumidores.
+O objetivo maior continua sendo apoiar gerentes e supervisores de supermercados na prevenção de perdas, conferência de discrepâncias e atendimento justo, sem presumir má-fé, avaliar caráter ou decidir culpa de consumidores. O repositório agora contém uma primeira **consulta informativa local ao CDC**, com frontend HTML/CSS/JavaScript e backend Python sem dependências externas.
 
-A stack pretendida é HTML/CSS/JavaScript no frontend e Python no backend. Framework, banco de dados, hospedagem, autenticação e política de retenção seguem pendentes. Nenhum código de aplicação foi iniciado. Ver `docs/requisitos-produto.md`, `docs/escopo-e-seguranca.md` e `prompts/instrucao-base.md`.
+Para testar localmente, na raiz do repositório:
 
-## Limites essenciais
+```bash
+python3 -m backend.server
+```
 
-Não implementar score individual, perfil por características pessoais, lista negra, reconhecimento facial/biométrico, rastreamento entre lojas, acusação automática, banimento ou recusa de atendimento automatizados. Não recomendar busca pessoal/de pertences, retenção, detenção, força, exposição pública ou discriminação. Verificar primeiro erros de caixa, cadastro, preço, leitura, treinamento, equipamento e processo.
+Acesse `http://127.0.0.1:8000`. O backend apenas lê os índices JSONL do catálogo e `data/cdc_rules.json`; oferece `GET /api/health` e `GET /api/rules`. Não grava incidentes, não salva consultas, não coleta dados de clientes e escuta apenas em `127.0.0.1`. Isso não é um ambiente de produção.
 
-O desenvolvimento inicial deve usar dados sintéticos. Nenhuma informação identificável, imagem, vídeo, biometria, dado sensível, pagamento ou dado de criança deve ser colocada em prompts, testes, exemplos ou logs. Uso futuro de dados reais requer definição e revisão profissional de finalidade, necessidade, acesso, base jurídica, retenção, exclusão e segurança. A especificação não atesta conformidade com a LGPD nem fornece parecer jurídico.
+## Integração com o CDC
 
-## Catálogo jurídico já realizado
+A API procura exatamente um registro federal para a Lei nº 8.078/1990 no catálogo e requer status `vigente`, data ISO válida e fonte HTTPS. Se o registro estiver ausente, duplicado, malformado ou não satisfizer esses requisitos, o endpoint não serve os resumos. A interface mostra o status e a data de verificação vindos do próprio catálogo.
 
-Os 39 atos do RJ no escopo anterior foram auditados com data de corte em 2026-11-01: 25 têm status recomendado `vigente`, 6 `declarada_inconstitucional`, 2 `parcialmente_vigente` e 6 `nao_verificada`. O workflow entregou 38 resultados estruturados. A Lei municipal nº 7.023/2021 teve falha de submissão JSON, mas deixou memorando individual com referências oficiais do Diário Oficial, da Câmara e do TJRJ; o memorando foi revisado, e o registro foi atualizado para `parcialmente_vigente`. Os detalhes estão em `docs/auditoria-rj-2026-11-01.md`.
+Há seis guias editoriais iniciais: preço/oferta; peso/quantidade; validade/segurança; troca/desistência; atendimento/práticas comerciais; cobrança/pagamentos. A organização usou como fonte oficial o texto atualizado da Câmara dos Deputados, mas os resumos ainda precisam de revisão profissional jurídica e operacional. Eles não cobrem todos os artigos, exceções, normas estaduais/municipais ou mudanças legais. Ver `docs/integracao-cdc.md`.
 
-A deduplicação consolidou 14 grupos e removeu 18 cópias secundárias, preservando tags, fontes e contexto. O catálogo tem 229 registros em 16 arquivos, sem chave repetida por `jurisdiction`, `territory` e `identifier`. O levantamento é seletivo e não exaustivo. `nao_verificada` significa que o status atual não foi confirmado, não que a lei foi revogada.
+## Salvaguardas
 
-## Próximos passos
+Não implementar score individual, perfil por características pessoais, lista negra, reconhecimento facial/biométrico, rastreamento entre lojas, acusação automática, banimento ou recusa automatizada. Não recomendar busca, retenção, detenção, força, exposição pública ou discriminação. Verificar primeiro erros de caixa, cadastro, preço, leitura, treinamento, equipamento e processo. Qualquer uso real deve passar por revisão jurídica, de privacidade e segurança.
 
-Revisar os requisitos com gerentes, equipes operacionais, atendimento, segurança, privacidade e profissionais jurídicos no Brasil. Aprovar políticas de incidente e salvaguardas antes de escolher frameworks ou começar código. Se houver implementação depois, trabalhar primeiro com dados sintéticos e desenho de segurança revisado.
+## Catálogo
 
-## GitHub e continuidade
+O catálogo preservado tem 229 registros em 16 arquivos, sem duplicatas na última validação. A auditoria anterior cobriu 39 atos selecionados do RJ, não todo o universo legal. Os resultados e referências estão em `docs/auditoria-rj-2026-11-01.md`; leia `legislacao/README.md` antes de alterar os índices.
 
-O branch atual é `research/legislacao-consumidor-2026-10-31`; o PR #1 está aberto e em rascunho: https://github.com/jottacostta/especialista-direito-do-consumidor/pull/1. `main` permanece intacta. Antes de continuar, conferir `git status`, fazer `git fetch --all --prune` e verificar o head e checks do PR. Não fazer merge sem autorização explícita da pessoa usuária.
+## Comandos de validação
 
-O repositório é privado. A sessão do ChatGPT precisa de autorização no GitHub ou de arquivos fornecidos por canal permitido para ler o conteúdo remoto. O saldo de créditos não é monitorado pelo repositório.
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m py_compile backend/catalog.py backend/server.py scripts/validate_legislation.py
+node --check frontend/app.js
+python3 scripts/validate_legislation.py --strict-duplicates
+```
+
+O workflow `.github/workflows/validate-catalog.yml` executa verificações locais reproduzíveis nos PRs. Não fazer push direto em `main` nem mesclar sem autorização explícita e checks obrigatórios aprovados no SHA atual.
