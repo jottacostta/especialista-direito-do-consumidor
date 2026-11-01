@@ -12,7 +12,7 @@ from urllib.parse import parse_qs, urlsplit
 
 from backend.catalog import CatalogIntegrationError, INDEX_DIR, ROOT, build_bundle
 
-FRONTEND_DIR = ROOT / "frontend"
+FRONTEND_DIR = ROOT / "public"
 STATIC_FILES = {
     "/styles.css": FRONTEND_DIR / "styles.css",
     "/app.js": FRONTEND_DIR / "app.js",

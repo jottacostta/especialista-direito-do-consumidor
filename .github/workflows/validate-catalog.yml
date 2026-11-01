@@ -27,13 +27,13 @@ jobs:
           python-version: "3.12"
 
       - name: Compile Python modules
-        run: python -m py_compile backend/catalog.py backend/server.py scripts/validate_legislation.py
+        run: python -m py_compile api/health.py api/rules.py backend/catalog.py backend/http_utils.py backend/server.py scripts/validate_legislation.py
 
       - name: Test Python application
         run: python -m unittest discover -s tests -v
 
       - name: Check frontend JavaScript syntax
-        run: node --check frontend/app.js
+        run: node --check public/app.js
 
       - name: Validate legislation records
         run: python scripts/validate_legislation.py

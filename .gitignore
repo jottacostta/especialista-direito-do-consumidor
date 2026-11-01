@@ -10,6 +10,7 @@ secrets.*
 node_modules/
 .venv/
 venv/
+.vercel/
 __pycache__/
 *.py[cod]
 .DS_Store
