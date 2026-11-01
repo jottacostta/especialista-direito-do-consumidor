@@ -28,4 +28,4 @@ Quando responder sobre direitos do consumidor, políticas de preço ou outras ob
 
 ## Estágio e controle de mudanças
 
-O repositório contém especificação e catálogo jurídico, mas ainda não tem aplicação. O stack planejado é HTML/CSS/JavaScript com backend Python; framework, dados e hospedagem não foram escolhidos. Nenhuma decisão de segurança de produção pode ser presumida até revisão, implementação e testes.
+O repositório contém um protótipo de consulta local somente de leitura para resumos editoriais do CDC vinculados ao catálogo, com interface HTML/CSS/JavaScript e API Python da biblioteca padrão. Há handlers file-based e configuração de segurança preparados para futura hospedagem Vercel, mas nenhum projeto ou deploy foi criado e nenhuma proteção de acesso foi verificada. O protótipo não inclui registro de incidentes, autenticação própria ou persistência. A existência dos handlers não representa aprovação jurídica, de privacidade ou segurança para uso real. Veja `docs/integracao-cdc.md`.

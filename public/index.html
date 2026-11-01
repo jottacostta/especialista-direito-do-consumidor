@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172a3a">
+  <meta name="description" content="Consulta informativa de regras do Código de Defesa do Consumidor para situações comuns em supermercados.">
+  <title>Guia do CDC para supermercados</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Guia de atendimento, início">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="brand-copy"><span class="brand-kicker">CONSULTA DE APOIO</span><strong>Guia de atendimento</strong></span>
+    </a>
+    <div class="topbar-meta"><span class="status-dot" aria-hidden="true"></span><span>Protótipo local</span><span class="topbar-divider" aria-hidden="true"></span><span>Base federal · CDC</span></div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>OPERAÇÃO · RELAÇÃO DE CONSUMO</p>
+        <h1 id="page-title">Informação clara.<br><span>Atendimento equilibrado.</span></h1>
+        <p class="hero-description">Consulte referências do Código de Defesa do Consumidor para situações comuns no supermercado. Use a tela para conferir regras e processos — não para decidir quem tem razão.</p>
+      </div>
+      <aside class="law-card" aria-labelledby="law-card-title">
+        <div class="law-card-top"><span class="law-icon" aria-hidden="true">§</span><span id="law-card-title">FONTE LEGAL</span></div>
+        <p class="law-name">Lei nº 8.078/1990</p>
+        <p class="law-subtitle">Código de Defesa do Consumidor</p>
+        <div id="law-status" class="law-status" role="status" aria-live="polite">Conferindo o catálogo…</div>
+        <a id="law-link" class="law-link" href="#" hidden target="_blank" rel="noopener noreferrer">Abrir fonte oficial <span aria-hidden="true">↗</span></a>
+        <div id="related-law-links" class="related-law-links" hidden aria-label="Fontes oficiais complementares"></div>
+      </aside>
+    </section>
+
+    <section class="notice" aria-labelledby="notice-title">
+      <span class="notice-symbol" aria-hidden="true">i</span>
+      <div><h2 id="notice-title">Primeiro, confira os fatos e o processo da loja</h2><p>Uma divergência de preço, caixa, pesagem ou pagamento não prova intenção. Confira também etiqueta, cadastro, equipamento, treinamento e condições da oferta. Este guia não classifica pessoas nem substitui revisão humana ou orientação jurídica.</p></div>
+    </section>
+
+    <section class="reference-section" aria-labelledby="reference-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">REFERÊNCIA RÁPIDA</p><h2 id="reference-title">O que você precisa conferir?</h2></div>
+        <p class="section-caption">Resumos informativos vinculados ao registro do CDC no catálogo do projeto.</p>
+      </div>
+
+      <form id="search-form" class="search-row" role="search">
+        <label class="search-box" for="search-input">
+          <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.4 4.4"></path></svg>
+          <input id="search-input" name="q" type="search" maxlength="120" placeholder="Busque por preço, validade, troca, cobrança…" autocomplete="off">
+        </label>
+        <button class="search-button" type="submit">Buscar</button>
+      </form>
+
+      <div id="category-filters" class="filters" aria-label="Filtrar por tema"></div>
+      <div class="results-heading"><p id="results-count" aria-live="polite">Carregando regras…</p><span class="results-note">Consulta local · sem cadastro</span></div>
+      <div id="error-message" class="error-message" role="alert" hidden></div>
+      <div id="rules-list" class="rules-list" aria-live="polite" aria-busy="true"></div>
+      <div id="empty-state" class="empty-state" hidden><span class="empty-mark" aria-hidden="true">?</span><h3>Nenhuma regra encontrada</h3><p>Tente outro termo ou selecione “Todos os temas”.</p></div>
+    </section>
+
+    <section class="source-note" aria-labelledby="source-note-title">
+      <div class="source-note-mark" aria-hidden="true">↗</div>
+      <div><h2 id="source-note-title">Confira o texto da lei e o contexto</h2><p>Os resumos são uma camada editorial de apoio, não reproduzem todos os dispositivos, exceções ou normas estaduais e municipais. O catálogo não é atualizado automaticamente; a data exibida é a data de verificação registrada.</p></div>
+    </section>
+  </main>
+
+  <footer class="footer"><span>Ferramenta informativa para apoio operacional</span><span>Sem armazenamento de consultas · Sem decisão automatizada</span></footer>
+</body>
+</html>

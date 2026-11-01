@@ -1,31 +1,44 @@
 # Retomada do projeto — para ChatGPT
 
-Atualizado em 2026-11-01. Este documento resume o estado do trabalho e registra que o escopo de produto foi atualizado; nenhuma aplicação foi codificada.
+Atualizado em 2026-11-01. A `main` contém o merge do PR #1. A aplicação está no PR #2: https://github.com/jottacostta/especialista-direito-do-consumidor/pull/2, branch `feature/prototipo-consulta-cdc` sobre `main`. O commit anterior (`910b3e9`) tinha CI verde; confirmar o head e CI novamente após alterações desta preparação Vercel.
 
-## Objetivo atual
+## Objetivo e estado técnico
 
-O projeto está sendo especificado como uma aplicação web para apoiar gerentes e supervisores de supermercados na prevenção de perdas, verificação de discrepâncias e documentação de incidentes. A assistência deve se basear em fatos observáveis, processos consistentes e revisão humana. Não deve presumir má-fé, avaliar caráter ou decidir culpa de consumidores.
+O projeto visa apoiar gerentes e supervisores de supermercados na prevenção de perdas, conferência de discrepâncias e atendimento justo, sem presumir má-fé, avaliar caráter ou decidir culpa de consumidores.
 
-A stack pretendida é HTML/CSS/JavaScript no frontend e Python no backend. Framework, banco de dados, hospedagem, autenticação e política de retenção seguem pendentes. Nenhum código de aplicação foi iniciado. Ver `docs/requisitos-produto.md`, `docs/escopo-e-seguranca.md` e `prompts/instrucao-base.md`.
+Há um protótipo de consulta somente de leitura em HTML/CSS/JavaScript e Python. A interface canônica está em `public/`. `backend/server.py` inicia um servidor local somente em `127.0.0.1`. Para testar localmente:
 
-## Limites essenciais
+```bash
+python3 -m backend.server
+```
 
-Não implementar score individual, perfil por características pessoais, lista negra, reconhecimento facial/biométrico, rastreamento entre lojas, acusação automática, banimento ou recusa de atendimento automatizados. Não recomendar busca pessoal/de pertences, retenção, detenção, força, exposição pública ou discriminação. Verificar primeiro erros de caixa, cadastro, preço, leitura, treinamento, equipamento e processo.
+Acesse `http://127.0.0.1:8000`. O protótipo não grava incidentes, não salva consultas nem coleta dados de clientes. A API oferece `GET /api/health` e `GET /api/rules`.
 
-O desenvolvimento inicial deve usar dados sintéticos. Nenhuma informação identificável, imagem, vídeo, biometria, dado sensível, pagamento ou dado de criança deve ser colocada em prompts, testes, exemplos ou logs. Uso futuro de dados reais requer definição e revisão profissional de finalidade, necessidade, acesso, base jurídica, retenção, exclusão e segurança. A especificação não atesta conformidade com a LGPD nem fornece parecer jurídico.
+## Preparação para Vercel
 
-## Catálogo jurídico já realizado
+O diretório `api/` contém handlers Python file-based para `/api/health` e `/api/rules`; `vercel.json` inclui os índices JSONL e as regras JSON no bundle e aplica cabeçalhos globais de segurança. A documentação oficial consultada informa que funções Python em `api/` podem expor uma classe `handler` baseada em `BaseHTTPRequestHandler`, e que `public/` serve assets estáticos. Ver `docs/integracao-cdc.md`.
 
-Os 39 atos do RJ no escopo anterior foram auditados com data de corte em 2026-11-01: 25 têm status recomendado `vigente`, 6 `declarada_inconstitucional`, 2 `parcialmente_vigente` e 6 `nao_verificada`. O workflow entregou 38 resultados estruturados. A Lei municipal nº 7.023/2021 teve falha de submissão JSON, mas deixou memorando individual com referências oficiais do Diário Oficial, da Câmara e do TJRJ; o memorando foi revisado, e o registro foi atualizado para `parcialmente_vigente`. Os detalhes estão em `docs/auditoria-rj-2026-11-01.md`.
+Nenhum projeto Vercel ou URL foi criado. Na integração conectada, o GitHub namespace `jottacostta` está marcado como acesso restrito, a busca Vercel do repo retorna lista vazia e `list_teams` não encontrou workspaces. O Vercel não está autorizado para ler este repo privado. A tentativa de relogin mostrou que o servidor Vercel já está autenticado e não abriu nova autorização. Para continuar, a pessoa responsável deve conectar/criar um workspace Vercel e dar à GitHub App do Vercel acesso ao repositório `jottacostta/especialista-direito-do-consumidor`; depois informar o slug do workspace. Verificar a configuração de Deployment Protection nesse workspace antes de chamar o deploy de protegido.
 
-A deduplicação consolidou 14 grupos e removeu 18 cópias secundárias, preservando tags, fontes e contexto. O catálogo tem 229 registros em 16 arquivos, sem chave repetida por `jurisdiction`, `territory` e `identifier`. O levantamento é seletivo e não exaustivo. `nao_verificada` significa que o status atual não foi confirmado, não que a lei foi revogada.
+O PR #2 ainda não foi mesclado em `main`. A pessoa usuária escolheu “Python + Vercel protegido”, mas não escreveu a autorização explícita de merge. Não mesclar até receber a autorização literal “Autorizo mesclar o PR #2”. Só depois de o workspace/repo estarem acessíveis e a proteção revisada pode ser criado o projeto Vercel para deploy automático a partir do GitHub.
 
-## Próximos passos
+## Integração com o CDC e salvaguardas
 
-Revisar os requisitos com gerentes, equipes operacionais, atendimento, segurança, privacidade e profissionais jurídicos no Brasil. Aprovar políticas de incidente e salvaguardas antes de escolher frameworks ou começar código. Se houver implementação depois, trabalhar primeiro com dados sintéticos e desenho de segurança revisado.
+A API procura exatamente um registro federal para a Lei nº 8.078/1990 no catálogo e requer status `vigente`, data ISO válida e fonte HTTPS. Se não confirmar a origem, não serve os resumos. A interface mostra o status e a data de verificação gravados no JSONL.
 
-## GitHub e continuidade
+Há seis guias editoriais iniciais: preço/oferta; peso/quantidade; validade/segurança; troca/desistência; atendimento/práticas comerciais; cobrança/pagamentos. Os resumos ainda precisam de revisão profissional jurídica e operacional. Não cobrem todos os artigos, exceções, normas estaduais/municipais ou mudanças legais.
 
-O branch atual é `research/legislacao-consumidor-2026-10-31`; o PR #1 está aberto e em rascunho: https://github.com/jottacostta/especialista-direito-do-consumidor/pull/1. `main` permanece intacta. Antes de continuar, conferir `git status`, fazer `git fetch --all --prune` e verificar o head e checks do PR. Não fazer merge sem autorização explícita da pessoa usuária.
+Não implementar score individual, perfil por características pessoais, lista negra, reconhecimento facial/biométrico, rastreamento entre lojas, acusação automática, banimento ou recusa automatizada. Não recomendar busca, retenção, detenção, força, exposição pública ou discriminação. Verificar primeiro erros de caixa, cadastro, preço, leitura, treinamento, equipamento e processo. Qualquer uso real exige revisão jurídica, de privacidade e segurança.
 
-O repositório é privado. A sessão do ChatGPT precisa de autorização no GitHub ou de arquivos fornecidos por canal permitido para ler o conteúdo remoto. O saldo de créditos não é monitorado pelo repositório.
+## Catálogo e validação
+
+O catálogo tem 229 registros em 16 arquivos, sem duplicatas na última validação. A auditoria anterior cobriu 39 atos selecionados do RJ, não todo o universo legal.
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m py_compile api/health.py api/rules.py backend/catalog.py backend/http_utils.py backend/server.py scripts/validate_legislation.py
+node --check public/app.js
+python3 scripts/validate_legislation.py --strict-duplicates
+```
+
+Não fazer push direto em `main` nem mesclar sem autorização explícita e checks obrigatórios verdes no SHA atual. O protótipo e as funções Vercel não foram aprovados para produção.
