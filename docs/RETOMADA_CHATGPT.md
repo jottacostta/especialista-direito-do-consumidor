@@ -4,36 +4,32 @@ Atualizado em 2026-10-31. Este documento resume o estado de trabalho para que ou
 
 ## Objetivo e prioridade
 
-O repositório privado `jottacostta/especialista-direito-do-consumidor` está construindo um assistente de informação geral sobre direito do consumidor brasileiro. A prioridade é o Estado do Rio de Janeiro e o Município do Rio de Janeiro, junto com as normas federais aplicáveis. A coleta cria um índice rastreável de atos normativos e links oficiais; não deve armazenar cópias integrais das leis.
+O repositório privado `jottacostta/especialista-direito-do-consumidor` está construindo um assistente de informação geral sobre direito do consumidor brasileiro. A prioridade foi o Estado do Rio de Janeiro e o Município do Rio de Janeiro, junto com as normas federais aplicáveis. A coleta cria um índice rastreável de atos normativos e links oficiais; não armazena cópias integrais das leis.
 
-## Estado da pesquisa
+## Estado atual da coleta
 
-A coleta foi dividida em 16 frentes. O workflow reportou 8 entregas concluídas e 8 falhas por insuficiência de créditos. Houve uma tentativa de retomada, mas as frentes pendentes voltaram a falhar pelo mesmo motivo. No diretório há 10 arquivos JSONL com 219 registros: 178 registros estão nos oito resultados que o workflow marcou como concluídos; outros 41 estão em dois arquivos deixados por frentes que falharam e devem ser tratados como **parciais**, não como pesquisas concluídas.
+A primeira rodada planejou 16 frentes. O workflow inicial concluiu 8 e falhou em 8 por insuficiência de créditos. Uma nova rodada focada nas oito pendências foi concluída e seus arquivos foram integrados ao branch. Existem agora 16 arquivos JSONL com 247 registros no total. Os oito arquivos novos acrescentaram 69 registros; os índices regionais do Sudeste/Sul e do Norte foram substituídos por versões revistas que preservam apenas itens incluídos pelos pesquisadores após sua checagem em fontes oficiais.
 
-O workflow marcou como concluídas estas frentes: `00-estado-rj.jsonl` (25 registros), `01-municipio-rio-de-janeiro.jsonl` (14), `03-federal-consumidor-geral.jsonl` (20), `04-digital-dados-atendimento.jsonl` (18), `07-saude-planos-medicamentos.jsonl` (25), `10-seguranca-produtos-alimentos.jsonl` (26), `11-habitacao-educacao-veiculos.jsonl` (22) e `15-estados-centro-oeste-df.jsonl` (28). As descrições de cada entrega estão no histórico do PR, mas precisam de revisão jurídica substantiva antes de uso.
+A contagem é por linha, não por norma única. O workflow reportou 14 chaves normativas repetidas entre arquivos. Parte são normas federais transversais intencionalmente listadas em mais de uma área; as demais são leis do RJ repetidas entre o arquivo territorial e os arquivos temáticos. Antes de ingerir como uma base única, decida se vai manter índices por domínio com sobreposição ou produzir um catálogo canônico deduplicado que reúna tags, fontes e notas sem perder evidências.
 
-Estas frentes falharam e não têm arquivo de saída concluído: `02-federal-fundamentais.jsonl`, `05-financeiro-credito-seguros.jsonl`, `06-telecom-postal.jsonl`, `08-energia-saneamento.jsonl`, `09-transporte-turismo.jsonl` e `13-estados-nordeste.jsonl`.
+A validação local (`python3 scripts/validate_legislation.py`) passou estruturalmente e listou 14 duplicatas. Ela verifica JSONL, campos, datas e esquema básico de URLs, mas não abre os links nem confirma a vigência ou a correção jurídica. Os agentes relataram que consultaram fontes oficiais, mas o agente pai ainda não fez revisão substantiva independente. Vários registros estão marcados `nao_verificada` e as coletas estaduais são explicitamente parciais.
 
-Os arquivos `12-estados-sudeste-sul.jsonl` (16 registros) e `14-estados-norte.jsonl` (25) existem, mas pertencem a agentes que falharam. Preserve-os como rascunhos e conclua/verifique a cobertura antes de incorporá-los como resultados completos. A legislação municipal fora da capital também não foi coberta nesta rodada.
+## Áreas cobertas e ressalvas
 
-## Duplicatas e validação
+Os 16 índices cobrem: normas próprias do Estado e da capital do Rio de Janeiro; normas federais fundamentais e gerais; comércio digital e dados; finanças, telecomunicações e postal; saúde; energia e saneamento; transporte e turismo; segurança de produtos e alimentos; habitação, educação e veículos; e recortes estaduais das regiões Sudeste/Sul, Nordeste, Norte e Centro-Oeste/DF.
 
-A verificação local encontrou seis duplicatas exatas entre os índices: Lei RJ 6.613/2013 (`00`/`04`); Lei RJ 8.265/2018 (`00`/`11`); Lei RJ 8.527/2019 (`00`/`04`); Leis municipais do Rio 6.309/2017 e 6.523/2019 (`01`/`04`); Lei municipal do Rio 7.384/2022 (`01`/`04`). Compare conteúdo, status e fontes antes de remover ou consolidar qualquer registro.
-
-`python3 scripts/validate_legislation.py` verifica estrutura e registra as seis duplicatas como avisos. Use `python3 scripts/validate_legislation.py --strict-duplicates` depois de resolvê-las. O validador não acessa a internet e não confirma que links, vigência ou relevância jurídica estejam corretos. Não trate os 219 registros como revisão jurídica concluída.
+A abrangência não é exaustiva. Os estados do Sudeste/Sul, Nordeste e Norte tiveram levantamentos seletivos, com lacunas explícitas nos próprios arquivos. A legislação municipal fora da capital não foi coberta. Também não se pretende incluir todos os atos infralegais setoriais, normas posteriores ou materiais sem força normativa.
 
 ## Próximos passos
 
-1. Retomar as seis frentes sem saída, começando pelas normas federais fundamentais aplicáveis ao RJ.
-2. Concluir e verificar os índices parciais de Sudeste/Sul e Norte. Manter a preferência pelo RJ e pela capital ao validar os resultados locais.
-3. Abrir as fontes oficiais de cada registro e confirmar número, ementa, território, vigência, alterações e URL. Não inventar status; use `nao_verificada` quando a fonte não permitir confirmar.
-4. Resolver as duplicatas, atualizar `legislacao/README.md`, rodar os dois comandos de validação e registrar a data real de conferência.
-5. Atualizar este documento e o PR após cada etapa de pesquisa relevante, preservando o branch remoto mesmo que outra execução seja interrompida.
-
-Não chame a cobertura de exaustiva. Leis municipais de outras cidades e possíveis atos regulatórios ainda não catalogados ficam fora desta rodada. Não mescle para `main` sem autorização explícita da pessoa usuária.
+1. Conferir a contagem e executar `python3 scripts/validate_legislation.py`; inspecionar as 14 duplicatas. Depois da decisão de deduplicação, executar `python3 scripts/validate_legislation.py --strict-duplicates` ou adaptar o validador para o modelo de índices por domínio escolhido.
+2. Revisar amostras e depois cada registro nas fontes oficiais: número, ementa, território, vigência, alterações e URL. Use `nao_verificada` quando a fonte não permitir confirmar o estado atual. Não trate a verificação automatizada como validação jurídica.
+3. Expandir a coleta estadual seletiva e pesquisar legislação municipal de outros municípios somente se o escopo for ampliado.
+4. Atualizar este documento e o inventário após cada etapa de revisão. Manter commits e pushes incrementais para preservar o checkpoint se uma execução for interrompida.
+5. Atualizar o PR em rascunho com os resultados e testes; não mesclar para `main` sem autorização explícita da pessoa usuária.
 
 ## Branch, PR e acesso
 
-O trabalho está no branch `research/legislacao-consumidor-2026-10-31`, derivado do commit inicial `4bc9c26` em `main`. O PR em rascunho é [#1](https://github.com/jottacostta/especialista-direito-do-consumidor/pull/1); `main` não foi alterada nem houve merge. Antes de continuar, confira `git status`, `git fetch --all --prune` e o estado do PR.
+O trabalho está no branch `research/legislacao-consumidor-2026-10-31`, baseado no commit inicial `4bc9c26` em `main`. O PR em rascunho é [#1](https://github.com/jottacostta/especialista-direito-do-consumidor/pull/1); `main` não foi alterada nem houve merge. Antes de continuar, confira `git status`, `git fetch --all --prune` e o estado do PR.
 
-O repositório é privado. Para que uma sessão do ChatGPT consiga acessá-lo, a pessoa usuária precisa autorizar esse repositório no GitHub ou fornecer os arquivos por um canal permitido. Este documento não concede acesso nem aciona automaticamente outra conta. O saldo de créditos não é monitorado por este repositório.
+O repositório é privado. Para que uma sessão do ChatGPT consiga acessá-lo, a pessoa usuária precisa autorizar esse repositório no GitHub ou fornecer os arquivos por um canal permitido. Este documento não concede acesso nem inicia outra conta. O saldo de créditos não é monitorado pelo repositório.
