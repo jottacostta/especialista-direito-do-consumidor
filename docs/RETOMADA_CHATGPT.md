@@ -24,6 +24,8 @@ Complete as seis frentes ausentes, começando pelas normas federais fundamentais
 
 Depois da revisão, consolide os registros sem perder origem ou histórico, valide novamente, faça commits rastreáveis em branch e publique/atualize um PR. Não mescle para `main` sem autorização explícita da pessoa usuária. Não inclua tokens, dados pessoais ou credenciais.
 
+O PR em rascunho para revisão está em https://github.com/jottacostta/especialista-direito-do-consumidor/pull/1. Ele aponta para `main`, mas não foi mesclado. Não há checks de CI configurados/registrados para esse PR no momento.
+
 ## Acesso do ChatGPT
 
 O repositório é privado. Para que uma sessão do ChatGPT consiga acessá-lo, a pessoa usuária precisa conectar/autorizar esse repositório no GitHub ou fornecer os arquivos por um canal permitido. Esta documentação não concede acesso nem aciona automaticamente outra conta. O saldo de créditos também não é monitorado por este repositório.
