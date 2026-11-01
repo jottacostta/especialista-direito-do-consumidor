@@ -2,7 +2,7 @@
 
 Projeto em construção para desenvolver um assistente de informação sobre relações de consumo no Brasil. A proposta é explicar conceitos em linguagem simples, organizar os fatos relatados pela pessoa e indicar caminhos de pesquisa e atendimento, sempre com fontes verificáveis.
 
-> **Estado atual:** especificação documental e primeira coleta parcial de normas brasileiras. O catálogo ainda requer conferência de vigência e revisão jurídica substantiva. Não há aplicação, modelo de IA ou base legal validada para uso em casos reais.
+> **Estado atual:** especificação documental e catálogo preliminar de normas. Foi concluída uma auditoria de 39 leis estaduais e municipais do Rio de Janeiro, mas o catálogo não é exaustivo e ainda requer conferência contínua e revisão jurídica profissional. Não há aplicação, modelo de IA ou base legal validada para uso em casos reais.
 
 ## Princípios do produto
 
@@ -16,6 +16,7 @@ Projeto em construção para desenvolver um assistente de informação sobre rel
 
 - `AGENTS.md` — regras de continuidade para ChatGPT e outros agentes de pesquisa/código.
 - `docs/RETOMADA_CHATGPT.md` — estado atual, lacunas e instruções para retomar o trabalho.
+- `docs/auditoria-rj-2026-11-01.md` — conclusões e referências da auditoria das 39 leis do RJ.
 - `prompts/instrucao-base.md` — instrução inicial para o comportamento do futuro assistente.
 - `docs/escopo-e-seguranca.md` — limites, privacidade e protocolo de resposta.
 - `docs/roteiro.md` — etapas propostas para evolução do produto.
@@ -25,7 +26,7 @@ Projeto em construção para desenvolver um assistente de informação sobre rel
 
 ## Próximos passos
 
-Consulte `docs/RETOMADA_CHATGPT.md` para o estado exato da coleta, os arquivos parciais e as frentes que ainda faltam. Antes de ampliar o catálogo, valide os JSONL, elimine duplicatas e confira cada norma nas fontes oficiais. Depois, obtenha revisão de profissional habilitado no Brasil e só então use o conteúdo em um protótipo.
+Consulte `docs/RETOMADA_CHATGPT.md` e `legislacao/README.md` para as contagens e limitações. O catálogo foi deduplicado por chave normativa e passou pelo validador em modo estrito. As coletas fora do RJ continuam seletivas; antes de ampliar o catálogo, confira as fontes oficiais e obtenha revisão de profissional habilitado no Brasil, especialmente antes de usar o conteúdo em um protótipo.
 
 ## Aviso
 

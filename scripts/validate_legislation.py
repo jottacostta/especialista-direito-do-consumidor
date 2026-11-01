@@ -33,7 +33,13 @@ REQUIRED = {
     "notes",
 }
 JURISDICTIONS = {"federal", "state", "district", "municipal"}
-STATUSES = {"vigente", "parcialmente_vigente", "revogada", "nao_verificada"}
+STATUSES = {
+    "vigente",
+    "parcialmente_vigente",
+    "revogada",
+    "declarada_inconstitucional",
+    "nao_verificada",
+}
 
 
 def valid_iso_date(value: object, *, allow_empty: bool = False) -> bool:
@@ -113,6 +119,13 @@ def main() -> int:
                 isinstance(tag, str) for tag in item["tags"]
             ):
                 errors.append(f"{path.name}:{line_number}: tags deve ser uma lista de textos")
+            if "related_source_urls" in item and (
+                not isinstance(item["related_source_urls"], list)
+                or not all(valid_url(url) for url in item["related_source_urls"])
+            ):
+                errors.append(
+                    f"{path.name}:{line_number}: related_source_urls deve ser uma lista de URLs válidas"
+                )
 
             key = (item["jurisdiction"], item["territory"], item["identifier"])
             duplicates[key].append(f"{path.name}:{line_number}")

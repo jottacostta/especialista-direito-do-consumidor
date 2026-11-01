@@ -6,9 +6,11 @@ Leia `docs/RETOMADA_CHATGPT.md` antes de continuar trabalho em andamento e `legi
 
 O projeto é um assistente de informação geral sobre relações de consumo no Brasil. A prioridade inicial é o Estado do Rio de Janeiro e o Município do Rio de Janeiro. Não apresente o produto como advogado, parecer profissional ou sistema já validado. Não invente leis, artigos, datas, vigência, decisões ou links. Diferencie fatos fornecidos, inferências e informação conferida em fonte oficial. Quando a vigência não estiver demonstrada em fonte primária, use `nao_verificada`.
 
+Use `declarada_inconstitucional` para invalidação judicial total, sem confundir com revogação formal. Use `parcialmente_vigente` quando somente dispositivos específicos tiverem sido invalidados e o registro precisar indicar a subsistência parcial do ato. Os status aceitos são `vigente`, `parcialmente_vigente`, `revogada`, `declarada_inconstitucional` e `nao_verificada`.
+
 ## Dados legislativos
 
-Siga o esquema de `legislacao/README.md`. Inclua atos normativos, não projetos de lei ou decisões individuais. Use links de fontes oficiais e registre a URL que sustenta o status quando ela for diferente da fonte do texto. Não copie textos integrais nem introduza dados pessoais. Preserve um objeto JSON por linha em UTF-8, com datas ISO `AAAA-MM-DD`.
+Siga o esquema de `legislacao/README.md`. Inclua atos normativos, não projetos de lei ou decisões individuais. Use links de fontes oficiais e registre a URL que sustenta o status quando ela for diferente da fonte do texto. Quando um registro consolidar fontes oficiais adicionais, preserve-as em `related_source_urls`, sem substituir `official_source_url` ou `status_basis_url`. Não copie textos integrais nem introduza dados pessoais. Preserve um objeto JSON por linha em UTF-8, com datas ISO `AAAA-MM-DD`.
 
 ## Fluxo Git
 
