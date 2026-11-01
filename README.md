@@ -1,32 +1,36 @@
-# Especialista em Direito do Consumidor
+# Assistente de Apoio à Gestão de Incidentes em Supermercados
 
-Projeto em construção para desenvolver um assistente de informação sobre relações de consumo no Brasil. A proposta é explicar conceitos em linguagem simples, organizar os fatos relatados pela pessoa e indicar caminhos de pesquisa e atendimento, sempre com fontes verificáveis.
+Projeto em fase de especificação para apoiar gerentes de supermercados na prevenção de perdas, verificação de discrepâncias e tratamento respeitoso de incidentes envolvendo consumidores. O nome de trabalho do produto ainda pode mudar; o nome do repositório não foi alterado.
 
-> **Estado atual:** este repositório contém apenas a especificação inicial e diretrizes de segurança. Ainda não há aplicação, modelo de IA, base jurídica indexada ou validação por profissional do Direito. Não use o projeto para decidir casos reais.
+> **Estado atual:** há documentação de produto e um catálogo legal preliminar. A aplicação ainda não existe. O catálogo inclui uma auditoria de 39 leis estaduais e municipais do Rio de Janeiro, mas não é exaustivo nem constitui validação jurídica para uso operacional.
 
 ## Princípios do produto
 
-- **Jurisdição explícita:** foco inicial no Brasil. Se a jurisdição ou o contexto não estiver claro, o assistente deve perguntar antes de concluir.
-- **Fontes verificáveis:** respostas jurídicas devem apontar para fontes oficiais e atuais. Não inventar artigos, prazos, decisões ou garantias de resultado.
-- **Limites claros:** oferecer informação geral e apoio à organização do caso; não se apresentar como advogado, não criar relação advogado-cliente e não substituir aconselhamento profissional.
-- **Privacidade:** pedir somente os dados necessários e orientar a pessoa a ocultar CPF, endereço, dados bancários, senhas e identificadores de pedidos antes de compartilhar documentos.
-- **Transparência:** separar fatos fornecidos, hipóteses e informação confirmada; declarar incerteza quando não houver fonte suficiente.
+- **Fatos antes de conclusões:** registrar comportamentos e discrepâncias observáveis; não presumir intenção nem chamar clientes de criminosos.
+- **Prevenção justa:** verificar primeiro erros de sistema, caixa, cadastro, preço, leitura, treinamento ou processo; aplicar procedimentos iguais a todas as pessoas.
+- **Revisão humana:** não automatizar acusação, busca, retenção, recusa de serviço, banimento ou chamada às autoridades.
+- **Privacidade:** coletar o mínimo necessário; não criar score de clientes, listas negras, reconhecimento facial/biométrico ou rastreamento entre lojas.
+- **Fontes confiáveis:** quando tratar de direitos do consumidor ou obrigações legais, usar fontes oficiais e declarar incertezas.
 
-## Estrutura
+## Escopo técnico planejado
 
-- `prompts/instrucao-base.md` — instrução inicial para o comportamento do futuro assistente.
-- `docs/escopo-e-seguranca.md` — limites, privacidade e protocolo de resposta.
-- `docs/roteiro.md` — etapas propostas para evolução do produto.
-- `avaliacoes/casos-de-seguranca.md` — cenários qualitativos para testar comportamento seguro.
+A interface futura poderá usar HTML, CSS e JavaScript, com backend Python. Framework, armazenamento, autenticação e hospedagem ainda precisam ser definidos após a revisão dos requisitos de segurança e privacidade. Não há código de aplicação neste branch.
 
-## Próximos passos
+## Documentos
 
-1. Definir público-alvo, canais de uso e formato do produto.
-2. Revisar escopo e instruções com profissional habilitado no Brasil.
-3. Selecionar fontes jurídicas oficiais, registrar URLs, datas de consulta e versões.
-4. Projetar busca com recuperação de fontes e citações rastreáveis.
-5. Criar testes de qualidade, privacidade e segurança antes de qualquer piloto.
+- `docs/requisitos-produto.md` — público, casos de uso, limites e decisões pendentes.
+- `docs/escopo-e-seguranca.md` — regras de tratamento de incidentes, privacidade e salvaguardas.
+- `prompts/instrucao-base.md` — comportamento esperado do assistente futuro.
+- `docs/roteiro.md` — etapas para validação antes de qualquer implementação.
+- `docs/RETOMADA_CHATGPT.md` — estado do repositório e contexto de continuidade.
+- `docs/auditoria-rj-2026-11-01.md` — auditoria e fontes das 39 leis do RJ selecionadas.
+- `legislacao/` — catálogo de legislação e URLs oficiais.
+- `scripts/validate_legislation.py` — validação local dos índices legais.
+
+## Próximo passo
+
+Revisar os casos de uso, as salvaguardas e as decisões pendentes com pessoas responsáveis por operação, segurança, privacidade e aconselhamento jurídico no Brasil. Só depois dessa revisão definir requisitos técnicos detalhados e iniciar o protótipo, usando exclusivamente dados sintéticos durante o desenvolvimento.
 
 ## Aviso
 
-O material deste repositório é uma especificação preliminar de produto e não constitui orientação jurídica para um caso concreto. Leis, regulamentos e entendimentos podem mudar; antes de agir, confirme a informação em fonte oficial e, quando necessário, procure advogado, Defensoria Pública ou órgão de defesa do consumidor.
+O projeto é uma especificação preliminar. Não substitui políticas internas aprovadas, profissionais de segurança, aconselhamento jurídico ou procedimentos de emergência. O sistema futuro deve apoiar decisões humanas justas; não deve determinar culpa ou intenção de consumidores.

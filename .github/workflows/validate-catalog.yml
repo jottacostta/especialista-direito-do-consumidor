@@ -1,0 +1,42 @@
+name: Validate legal catalog
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: catalog-validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: validate-catalog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile legislation validator
+        run: python -m py_compile scripts/validate_legislation.py
+
+      - name: Validate legislation records
+        run: python scripts/validate_legislation.py
+
+      - name: Reject duplicate legislation keys
+        run: python scripts/validate_legislation.py --strict-duplicates
+
+      - name: Check diff formatting
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: git diff --check "$BASE_SHA...$HEAD_SHA"
