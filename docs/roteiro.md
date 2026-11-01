@@ -1,28 +1,35 @@
 # Roteiro de evolução
 
-Este roteiro é preliminar e não implica que as etapas abaixo já estejam implementadas.
+Este roteiro é preliminar. Nenhuma etapa de aplicação foi implementada; não começar código antes da aprovação dos requisitos, limites e decisões de dados.
 
-## Etapa 1 — Definição e validação
+## Etapa 1 — Validar problema e usuários
 
-- Definir público, canais, casos de uso permitidos e fronteiras do produto.
-- Obter revisão do escopo e do prompt-base por profissional habilitado no Brasil.
-- Especificar como tratar urgência, prazos, documentos e encaminhamentos.
+- Conversar com gerentes, supervisores, equipes operacionais, atendimento ao consumidor e profissionais de segurança para entender incidentes reais sem recolher identificadores de clientes.
+- Confirmar que o problema prioritário é verificação de processo, prevenção de perdas e documentação, não classificação de pessoas.
+- Revisar `docs/requisitos-produto.md` e aprovar os casos de uso e não objetivos.
 
-## Etapa 2 — Base de conhecimento verificável
+## Etapa 2 — Revisão jurídica, privacidade e segurança
 
-- Selecionar fontes oficiais por tema e registrar URL, órgão, data de consulta e versão.
-- Definir processo de revisão e atualização, inclusive para fontes alteradas ou removidas.
-- Criar respostas com citações rastreáveis até a fonte, sem depender de memória do modelo.
+- Revisar CDC, LGPD, normas trabalhistas, políticas de segurança e regras locais com profissionais habilitados, usando fontes oficiais atuais.
+- Definir governança de incidentes, revisão humana, oportunidade de esclarecimento, acesso, retenção, exclusão, auditoria e resposta a incidentes de dados.
+- Excluir do desenho score individual, listas negras, reconhecimento facial/biométrico, busca por imagem, monitoramento entre lojas e decisões adversas automáticas.
+- Não iniciar piloto com dados reais antes de aprovar finalidade, necessidade, transparência, controles e avaliação profissional.
 
-## Etapa 3 — Protótipo técnico
+## Etapa 3 — Definir arquitetura
 
-- Escolher interface e modelo somente depois de definidos privacidade, custo e requisitos de qualidade.
-- Implementar recuperação de fontes e separar conteúdo recuperado de instruções do sistema.
-- Minimizar dados pessoais em entradas, logs e telemetria; documentar retenção e exclusão.
+- Confirmar a interface planejada em HTML/CSS/JavaScript e backend Python; comparar frameworks somente após requisitos de autenticação, autorização, armazenamento e auditoria.
+- Desenhar fluxo de verificação, registro factual, conversa respeitosa e encaminhamento.
+- Definir ambiente, hospedagem e proteção de segredos. Nenhuma dessas decisões está tomada.
 
-## Etapa 4 — Avaliação e piloto
+## Etapa 4 — Protótipo com dados sintéticos
 
-- Testar citações, atualidade, perguntas de esclarecimento, incerteza, privacidade e encaminhamentos.
-- Avaliar casos adversariais e cenários fora do escopo.
-- Fazer piloto limitado, com supervisão humana e mecanismo claro para reportar erros.
-- Suspender o uso se houver citações inventadas recorrentes ou falhas de proteção de dados.
+- Implementar somente depois da aprovação das etapas anteriores.
+- Usar exemplos fictícios, sem nome, imagem, documento ou histórico de cliente real.
+- Separar assistente informativo de qualquer sistema de caixa, câmeras, CRM, pagamento, lista de observação ou mecanismo de controle de acesso.
+
+## Etapa 5 — Avaliação e piloto limitado
+
+- Testar erros de caixa/preço/sistema, reclamações legítimas, falsos positivos, contextos diversos, pedidos discriminatórios e tentativas de induzir acusação.
+- Medir clareza, qualidade da documentação, consistência, taxa de encaminhamento e efeitos de erros sobre clientes e funcionários; não otimizar uma métrica de identificação de “suspeitos”.
+- Fazer piloto restrito, com supervisão humana, treinamento, auditoria, canal de contestação e critérios de suspensão.
+- Suspender o piloto diante de profiling, exposição indevida, decisão adversa automática, vazamento ou acusações sem evidência.

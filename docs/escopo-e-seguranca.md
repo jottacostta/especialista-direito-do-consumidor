@@ -1,26 +1,31 @@
 # Escopo e segurança
 
-## Escopo inicial
+## Escopo do produto
 
-O projeto pretende apoiar a compreensão geral de relações de consumo no Brasil. O assistente poderá explicar conceitos, ajudar a estruturar uma cronologia, listar perguntas a esclarecer e apontar canais ou fontes a verificar. O escopo não inclui representação, parecer jurídico, avaliação definitiva de prova, protocolo de reclamações em nome da pessoa ou promessa de resultado.
+O produto em especificação deve apoiar gerentes e supervisores de supermercados na prevenção de perdas, verificação de discrepâncias e documentação de incidentes. Pode ajudar a conferir registros de compra e processos da loja, preparar uma conversa respeitosa e indicar quando encaminhar o caso a uma pessoa responsável.
+
+A ferramenta não determina intenção, culpa ou autoria de crime. Uma diferença em recibo, estoque, preço ou pagamento é um fato a verificar, não prova de má-fé. Antes de atribuir causa, considerar falhas de caixa, etiqueta, balança, cadastro, equipamento, treinamento e procedimento.
 
 ## Salvaguardas de resposta
 
-- Declarar a jurisdição considerada e pedir esclarecimento quando isso puder alterar a resposta.
-- Usar fontes oficiais e atuais, com referências que permitam conferência independente.
-- Não inventar citações, prazos, decisões, percentuais ou procedimentos.
-- Explicitar dependências factuais e documentais e diferenciar informação confirmada de hipótese.
-- Evitar instruções categóricas em situações urgentes, complexas ou de alto impacto; encaminhar para orientação humana adequada.
-- Não incentivar omissão de fatos, falsificação de documentos, assédio, ameaça ou uso abusivo de canais de reclamação.
+- Usar linguagem neutra: “incidente”, “discrepância” ou “suspeita a verificar”. Diferenciar observação, evidência, relato, hipótese e lacuna.
+- Não atribuir risco ou intenção a uma pessoa por aparência, raça, etnia, nacionalidade, idioma, gênero, idade, deficiência, condição econômica ou características associadas.
+- Não criar score individual, lista negra, reconhecimento facial/biométrico, busca por imagem, monitoramento entre lojas ou alerta compartilhado sobre consumidores.
+- Não orientar busca pessoal ou de pertences, retenção, detenção, força física, ameaça, exposição pública, acusação sem comprovação ou recusa retaliatória de venda/atendimento.
+- Não automatizar denúncia, banimento, recusa de serviço ou qualquer decisão adversa. Exigir revisão por pessoa treinada e oportunidade de esclarecimento respeitosa.
+- Priorizar conferência de processo e resolução voluntária. Em risco imediato à segurança, orientar afastamento e acionamento do protocolo de emergência aprovado pela empresa, sem improvisar intervenção.
+- Utilizar políticas internas somente quando fornecidas e aprovadas. Não inventar procedimentos nem apresentar hipótese jurídica como obrigação.
 
 ## Privacidade e dados
 
-O produto deve minimizar coleta e retenção. Antes de pedir arquivos ou detalhes, explicar o que é necessário e orientar a ocultar dados identificadores e dados de terceiros. Nunca pedir credenciais, senhas, códigos de autenticação ou dados completos de pagamento. Uma implementação futura deverá definir política de retenção, controles de acesso, proteção de logs e procedimento para exclusão antes de receber dados de pessoas usuárias.
+O desenvolvimento inicial deve usar dados sintéticos. O assistente não deve receber nomes, documentos, imagens, vídeo, biometria, dados de pagamento, dados sensíveis ou informações de crianças. Não inserir gravações de clientes em prompts ou exemplos. Se, no futuro, uma funcionalidade precisar de dados reais, a equipe deverá justificar finalidade e necessidade, definir base jurídica e transparência, limitar acessos, proteger logs, determinar retenção e exclusão e estabelecer auditoria e resposta a incidentes antes do piloto.
 
-## Fontes e atualização
+Qualquer tratamento real deve passar por revisão profissional de privacidade/LGPD e jurídica. Esta especificação não atesta conformidade legal. Configurações de retenção, permissões, criptografia e hospedagem permanecem pendentes.
 
-Antes de respostas baseadas em legislação ou precedentes, uma futura implementação deverá manter um inventário de fontes, com órgão responsável, URL, data de consulta, versão/atualização e assunto coberto. O assistente não deve tratar conteúdo desatualizado ou sem origem verificável como autoridade. Mudanças de lei e entendimentos devem ser revistas por pessoa qualificada.
+## Informação jurídica
 
-## Uso responsável
+Quando responder sobre direitos do consumidor, políticas de preço ou outras obrigações, declarar a jurisdição e usar fonte oficial atual, com data de consulta quando relevante. O catálogo existente é seletivo: sua auditoria cobre 39 leis do Estado e do Município do Rio de Janeiro, não toda a legislação aplicável. Diferenciar texto legal, interpretação e política interna. Indicar incerteza e encaminhar dúvidas complexas à assessoria jurídica; não apresentar o sistema como advogado ou parecer profissional.
 
-O repositório é um protótipo documental. Nenhuma resposta gerada por uma implementação futura deve ser considerada substituta de aconselhamento jurídico individualizado. O aviso de limites deve aparecer de forma proporcional, sem impedir explicações gerais úteis.
+## Estágio e controle de mudanças
+
+O repositório contém especificação e catálogo jurídico, mas ainda não tem aplicação. O stack planejado é HTML/CSS/JavaScript com backend Python; framework, dados e hospedagem não foram escolhidos. Nenhuma decisão de segurança de produção pode ser presumida até revisão, implementação e testes.

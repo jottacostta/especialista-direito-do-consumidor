@@ -1,33 +1,36 @@
-# Especialista em Direito do Consumidor
+# Assistente de Apoio à Gestão de Incidentes em Supermercados
 
-Projeto em construção para desenvolver um assistente de informação sobre relações de consumo no Brasil. A proposta é explicar conceitos em linguagem simples, organizar os fatos relatados pela pessoa e indicar caminhos de pesquisa e atendimento, sempre com fontes verificáveis.
+Projeto em fase de especificação para apoiar gerentes de supermercados na prevenção de perdas, verificação de discrepâncias e tratamento respeitoso de incidentes envolvendo consumidores. O nome de trabalho do produto ainda pode mudar; o nome do repositório não foi alterado.
 
-> **Estado atual:** especificação documental e catálogo preliminar de normas. Foi concluída uma auditoria de 39 leis estaduais e municipais do Rio de Janeiro, mas o catálogo não é exaustivo e ainda requer conferência contínua e revisão jurídica profissional. Não há aplicação, modelo de IA ou base legal validada para uso em casos reais.
+> **Estado atual:** há documentação de produto e um catálogo legal preliminar. A aplicação ainda não existe. O catálogo inclui uma auditoria de 39 leis estaduais e municipais do Rio de Janeiro, mas não é exaustivo nem constitui validação jurídica para uso operacional.
 
 ## Princípios do produto
 
-- **Jurisdição explícita:** foco inicial no Brasil, com prioridade para o Estado e o Município do Rio de Janeiro. Se a jurisdição ou o contexto não estiver claro, o assistente deve perguntar antes de concluir.
-- **Fontes verificáveis:** respostas jurídicas devem apontar para fontes oficiais e atuais. Não inventar artigos, prazos, decisões ou garantias de resultado.
-- **Limites claros:** oferecer informação geral e apoio à organização do caso; não se apresentar como advogado, não criar relação advogado-cliente e não substituir aconselhamento profissional.
-- **Privacidade:** pedir somente os dados necessários e orientar a pessoa a ocultar CPF, endereço, dados bancários, senhas e identificadores de pedidos antes de compartilhar documentos.
-- **Transparência:** separar fatos fornecidos, hipóteses e informação confirmada; declarar incerteza quando não houver fonte suficiente.
+- **Fatos antes de conclusões:** registrar comportamentos e discrepâncias observáveis; não presumir intenção nem chamar clientes de criminosos.
+- **Prevenção justa:** verificar primeiro erros de sistema, caixa, cadastro, preço, leitura, treinamento ou processo; aplicar procedimentos iguais a todas as pessoas.
+- **Revisão humana:** não automatizar acusação, busca, retenção, recusa de serviço, banimento ou chamada às autoridades.
+- **Privacidade:** coletar o mínimo necessário; não criar score de clientes, listas negras, reconhecimento facial/biométrico ou rastreamento entre lojas.
+- **Fontes confiáveis:** quando tratar de direitos do consumidor ou obrigações legais, usar fontes oficiais e declarar incertezas.
 
-## Estrutura
+## Escopo técnico planejado
 
-- `AGENTS.md` — regras de continuidade para ChatGPT e outros agentes de pesquisa/código.
-- `docs/RETOMADA_CHATGPT.md` — estado atual, lacunas e instruções para retomar o trabalho.
-- `docs/auditoria-rj-2026-11-01.md` — conclusões e referências da auditoria das 39 leis do RJ.
-- `prompts/instrucao-base.md` — instrução inicial para o comportamento do futuro assistente.
-- `docs/escopo-e-seguranca.md` — limites, privacidade e protocolo de resposta.
-- `docs/roteiro.md` — etapas propostas para evolução do produto.
-- `avaliacoes/casos-de-seguranca.md` — cenários qualitativos para testar comportamento seguro.
-- `legislacao/` — catálogo estruturado de normas e links de fontes oficiais.
-- `scripts/validate_legislation.py` — verificação local do formato e de duplicatas no catálogo.
+A interface futura poderá usar HTML, CSS e JavaScript, com backend Python. Framework, armazenamento, autenticação e hospedagem ainda precisam ser definidos após a revisão dos requisitos de segurança e privacidade. Não há código de aplicação neste branch.
 
-## Próximos passos
+## Documentos
 
-Consulte `docs/RETOMADA_CHATGPT.md` e `legislacao/README.md` para as contagens e limitações. O catálogo foi deduplicado por chave normativa e passou pelo validador em modo estrito. As coletas fora do RJ continuam seletivas; antes de ampliar o catálogo, confira as fontes oficiais e obtenha revisão de profissional habilitado no Brasil, especialmente antes de usar o conteúdo em um protótipo.
+- `docs/requisitos-produto.md` — público, casos de uso, limites e decisões pendentes.
+- `docs/escopo-e-seguranca.md` — regras de tratamento de incidentes, privacidade e salvaguardas.
+- `prompts/instrucao-base.md` — comportamento esperado do assistente futuro.
+- `docs/roteiro.md` — etapas para validação antes de qualquer implementação.
+- `docs/RETOMADA_CHATGPT.md` — estado do repositório e contexto de continuidade.
+- `docs/auditoria-rj-2026-11-01.md` — auditoria e fontes das 39 leis do RJ selecionadas.
+- `legislacao/` — catálogo de legislação e URLs oficiais.
+- `scripts/validate_legislation.py` — validação local dos índices legais.
+
+## Próximo passo
+
+Revisar os casos de uso, as salvaguardas e as decisões pendentes com pessoas responsáveis por operação, segurança, privacidade e aconselhamento jurídico no Brasil. Só depois dessa revisão definir requisitos técnicos detalhados e iniciar o protótipo, usando exclusivamente dados sintéticos durante o desenvolvimento.
 
 ## Aviso
 
-O material deste repositório é uma especificação preliminar de produto e um índice de pesquisa em andamento. Não constitui orientação jurídica para um caso concreto. Leis, regulamentos e entendimentos podem mudar; antes de agir, confirme a informação em fonte oficial e, quando necessário, procure advogado, Defensoria Pública ou órgão de defesa do consumidor.
+O projeto é uma especificação preliminar. Não substitui políticas internas aprovadas, profissionais de segurança, aconselhamento jurídico ou procedimentos de emergência. O sistema futuro deve apoiar decisões humanas justas; não deve determinar culpa ou intenção de consumidores.
