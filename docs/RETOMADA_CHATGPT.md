@@ -1,6 +1,6 @@
 # Retomada do projeto — para ChatGPT
 
-Atualizado em 2026-11-02. A base `main` parte de `c886f96`. A migração está commitada e enviada à branch `feature/github-pages-static`, commit `20564e7`. PR #4 está aberto: https://github.com/jottacostta/especialista-direito-do-consumidor/pull/4.
+Atualizado em 2026-11-02. A base `main` parte de `c886f96`. A migração está na branch remota `feature/github-pages-static`. PR #4 está aberto: https://github.com/jottacostta/especialista-direito-do-consumidor/pull/4. Sempre confirme o head SHA atual antes de agir.
 
 ## Objetivo e decisão atual
 
@@ -27,7 +27,7 @@ URL-alvo após habilitar Pages: `https://jottacostta.github.io/especialista-dire
 - `npm run build:pages` — gerou `dist/` com seis guias e relatório de 13/13 testes.
 - Smoke HTTP — homepage, assets CSS/JS, bundle CDC, painel, relatório JSON e rotas estáticas responderam; POST recusado com 405; a suíte testa traversal e symlink externo.
 - `node --check` e `git diff --check` locais — aprovados.
-- CI inicial do PR #4 no SHA `20564e7` falhou exclusivamente em `Check diff formatting`: `actions/checkout` usou histórico raso, então a base `c886f96` não estava disponível para `git diff BASE...HEAD`. Build, testes e upload do artefato passaram; deploy foi corretamente ignorado no PR. O workflow foi corrigido com `fetch-depth: 0`; o novo commit e um novo CI ainda são necessários.
+- CI inicial do PR #4 no SHA `20564e7` falhou exclusivamente em `Check diff formatting`: `actions/checkout` usou histórico raso e a base não estava disponível para `git diff BASE...HEAD`. Build, testes e upload passaram; deploy foi corretamente ignorado no PR. O workflow foi corrigido com `fetch-depth: 0`. O run `41513072342` passou no SHA `e5fc938`; este handoff adiciona outro commit documental, então confira um check verde no head atual antes de qualquer merge.
 - Uma busca limitada por padrões conhecidos de chaves, CPF, e-mail e nomes de arquivos sensíveis não encontrou ocorrências no snapshot da mudança. `gitleaks` não estava instalado; essa busca não garante ausência de todo dado sensível. Repetir revisão dos arquivos do PR antes de tornar o repo público.
 
 ## CDC e salvaguardas
@@ -40,8 +40,8 @@ O site e o relatório de testes serão públicos. Não incluir dados reais de cl
 
 ## Próximas etapas
 
-1. Repetir `npm test`, validador, build e `git diff --check` no commit corretivo.
-2. Enviar o novo commit ao mesmo branch e conferir CI verde no head exato do PR #4.
+1. Verificar o commit documental e o resultado do CI disparado para o head atual do PR #4.
+2. Atualizar o corpo do PR para registrar o SHA e os checks verdes atuais.
 3. Não mesclar sem pedido explícito de merge e checks obrigatórios aprovados.
 4. Após o merge, mudar a visibilidade do repositório para público (autorizado), habilitar Pages com fonte GitHub Actions, acompanhar o deploy e confirmar a URL antes de chamá-la ativa.
 5. Atualizar README e esta passagem de bastão depois de confirmar a publicação real.
