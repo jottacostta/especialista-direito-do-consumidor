@@ -4,7 +4,7 @@ Leia `docs/RETOMADA_CHATGPT.md`, `docs/requisitos-produto.md` e `docs/escopo-e-s
 
 ## Produto e estágio
 
-O repositório contém um protótipo web de consulta informativa ao CDC: frontend HTML/CSS/JavaScript em `public/`, API local Python em `backend/` e entrypoints file-based para Vercel em `api/`. O Vercel deploy ainda não foi criado: requer workspace/team acessível, autorização GitHub para o repo privado, proteção de implantação verificada e merge autorizado do PR. Não descreva a aplicação como publicada ou pronta para produção.
+O repositório contém um protótipo web de consulta informativa ao CDC: frontend HTML/CSS/JavaScript em `public/`, API local Python em `backend/` e entrypoints file-based para Vercel em `api/`. Há também um painel dev-only de testes em `tools/test-dashboard/`, servido separadamente por `python3 -m backend.test_dashboard` e somente em `127.0.0.1`; nunca mova esse painel para `public/` ou para rotas da aplicação pública. O Vercel deploy ainda não foi criado: requer workspace/team acessível, autorização GitHub para o repo privado e proteção de implantação verificada. Não descreva a aplicação como publicada ou pronta para produção.
 
 ## Limites de segurança e justiça
 
@@ -24,4 +24,4 @@ Siga o esquema de `legislacao/README.md`. Inclua atos normativos, não projetos 
 
 ## Fluxo Git, aplicação e validação
 
-Trabalhe em branch de tarefa baseado no `main` atualizado. Não faça push direto em `main` nem mescle PR sem autorização explícita. Preserve alterações existentes. Para os índices, execute `python3 scripts/validate_legislation.py` e `python3 scripts/validate_legislation.py --strict-duplicates`. Para a aplicação, execute `python3 -m unittest discover -s tests -v`, `python3 -m py_compile api/health.py api/rules.py backend/catalog.py backend/http_utils.py backend/server.py` e `node --check public/app.js`. Valide também `vercel.json` como JSON e confira que `includeFiles` inclui os dados legislativos exigidos. Não declare conformidade legal, cobertura exaustiva ou segurança de produção sem revisão e evidência documentadas.
+Trabalhe em branch de tarefa baseado no `main` atualizado. Não faça push direto em `main` nem mescle PR sem autorização explícita. Preserve alterações existentes. Para os índices, execute `python3 scripts/validate_legislation.py` e `python3 scripts/validate_legislation.py --strict-duplicates`. Para a aplicação, execute `python3 -m unittest discover -s tests -v`, `python3 -m py_compile api/health.py api/rules.py backend/catalog.py backend/http_utils.py backend/server.py backend/test_dashboard.py` e `node --check public/app.js` e `node --check tools/test-dashboard/app.js`. Valide também `vercel.json` como JSON e confira que `includeFiles` inclui os dados legislativos exigidos. Não declare conformidade legal, cobertura exaustiva ou segurança de produção sem revisão e evidência documentadas.
