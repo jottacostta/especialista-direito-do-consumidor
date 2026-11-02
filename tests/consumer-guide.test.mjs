@@ -36,6 +36,14 @@ export const cases = [
     },
   },
   {
+    name: "pesquisa por substituição de produtos encontra o guia de troca e vício",
+    group: "Unitário · Pesquisa client-side",
+    run: () => {
+      const results = filterRules(baseBundle.rules, "substituição de produtos");
+      assert.deepEqual(results.map((rule) => rule.id), ["troca-desistencia"]);
+    },
+  },
+  {
     name: "falha de forma fechada se o registro do CDC não estiver vigente",
     group: "Unitário · Segurança do bundle",
     run: () => {
