@@ -66,8 +66,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-v
   font-size: 13px;
 }
 
-.local-tag { display: inline-flex; align-items: center; gap: 8px; color: #d7e5ea; font-size: 12px; }
-.local-dot { width: 7px; height: 7px; border-radius: 50%; background: #70d49f; box-shadow: 0 0 0 4px rgba(112,212,159,.13); }
+.public-tag { display: inline-flex; align-items: center; gap: 8px; color: #d7e5ea; font-size: 12px; }
+.public-dot { width: 7px; height: 7px; border-radius: 50%; background: #70d49f; box-shadow: 0 0 0 4px rgba(112,212,159,.13); }
 
 .page-shell { width: min(1160px, calc(100% - 48px)); margin: 0 auto; padding: 52px 0 34px; }
 .hero { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 22px; }
@@ -76,8 +76,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-v
 h1, h2, p { margin-top: 0; }
 h1 { margin-bottom: 10px; color: var(--navy); font-size: clamp(32px, 4.2vw, 45px); line-height: 1.1; letter-spacing: -.035em; }
 .intro { max-width: 700px; margin-bottom: 0; color: var(--muted); font-size: 15px; }
-.hero-actions { display: flex; flex: 0 0 auto; gap: 10px; padding-bottom: 2px; }
-.button { min-height: 43px; padding: 0 16px; border: 1px solid transparent; border-radius: 9px; font-size: 13px; font-weight: 700; transition: background .15s ease, transform .15s ease; }
+.intro code { padding: 2px 4px; border-radius: 4px; background: #e9f0f3; color: var(--navy); font: 12px ui-monospace, SFMono-Regular, Consolas, monospace; }
+.hero-actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; max-width: 430px; padding-bottom: 2px; }
+.button { min-height: 43px; padding: 0 16px; border: 1px solid transparent; border-radius: 9px; font-size: 13px; font-weight: 700; transition: background .15s ease, transform .15s ease; text-decoration: none; }
 .button:hover:not(:disabled) { transform: translateY(-1px); }
 .button:disabled { cursor: not-allowed; opacity: .5; }
 .button-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: white; box-shadow: 0 5px 14px rgba(23,108,145,.18); }
@@ -85,10 +86,12 @@ h1 { margin-bottom: 10px; color: var(--navy); font-size: clamp(32px, 4.2vw, 45px
 .button-icon { font-size: 16px; line-height: 1; }
 .button-secondary { background: white; color: var(--navy); border-color: var(--line); }
 .button-secondary:hover:not(:disabled) { background: #edf4f7; }
+.ci-note { flex-basis: 100%; margin: 0; color: var(--muted); font-size: 11px; text-align: right; }
 .live-status { min-height: 21px; margin-bottom: 15px; color: var(--muted); font-size: 12px; }
 .live-status[data-state="success"] { color: var(--green); }
 .live-status[data-state="error"] { color: var(--red); }
-.live-status[data-state="running"] { color: var(--blue); }
+.live-status[data-state="loading"] { color: var(--blue); }
+.report-state { margin: -2px 0 16px; padding: 12px 14px; border: 1px solid #edc7c7; border-radius: 9px; background: var(--red-bg); color: var(--red); font-size: 12px; }
 
 .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 .metric-card { min-height: 137px; padding: 19px 20px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
@@ -149,7 +152,8 @@ h2 { margin-bottom: 0; color: var(--navy); font-size: 24px; letter-spacing: -.02
 
 @media (max-width: 850px) {
   .hero { align-items: flex-start; flex-direction: column; gap: 18px; }
-  .hero-actions { width: 100%; }
+  .hero-actions { width: 100%; max-width: none; justify-content: flex-start; }
+  .ci-note { text-align: left; }
   .summary-grid { grid-template-columns: repeat(2, 1fr); }
   .filters { grid-template-columns: 1fr 1fr; }
   .search-field { grid-column: 1 / -1; }
@@ -157,12 +161,13 @@ h2 { margin-bottom: 0; color: var(--navy); font-size: 24px; letter-spacing: -.02
 
 @media (max-width: 540px) {
   .topbar { height: 58px; padding: 0 18px; }
-  .local-tag { font-size: 10px; }
+  .public-tag { font-size: 10px; }
   .page-shell { width: calc(100% - 32px); padding-top: 32px; }
   h1 { font-size: 34px; }
   .intro { font-size: 13px; }
   .hero-actions { display: grid; grid-template-columns: 1fr 1fr; }
   .button { padding: 0 10px; font-size: 12px; }
+  .ci-note { grid-column: 1 / -1; }
   .metric-card { min-height: 120px; padding: 15px; }
   .metric-value { font-size: 29px; }
   .progress-panel { margin-bottom: 32px; }

@@ -5,41 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <title>Painel de testes — Consulta CDC</title>
-  <link rel="stylesheet" href="/styles.css">
-  <script src="/app.js" defer></script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="/" aria-label="Painel local de validação">
+    <a class="brand" href="./" aria-label="Painel público de relatório de testes">
       <span class="brand-mark" aria-hidden="true">V</span>
-      <span>Validação local</span>
+      <span>Relatório público</span>
     </a>
-    <span class="local-tag"><span class="local-dot" aria-hidden="true"></span>Somente neste computador</span>
+    <span class="public-tag"><span class="public-dot" aria-hidden="true"></span>Executado no CI</span>
   </header>
 
   <main class="page-shell">
     <section class="hero" aria-labelledby="page-title">
       <div class="hero-copy">
-        <p class="eyebrow">CONSULTA CDC · DESENVOLVIMENTO</p>
+        <p class="eyebrow">CONSULTA CDC · CI PÚBLICO</p>
         <h1 id="page-title">Relatório de testes</h1>
-        <p class="intro">Acompanhe os testes unitários e de integração da consulta ao Código de Defesa do Consumidor. Abra cada caso para ver o identificador e, se houver, o traceback completo.</p>
+        <p class="intro">Acompanhe os testes unitários e de integração da consulta ao Código de Defesa do Consumidor. Este painel estático lê <code>../data/test-report.json</code>; todo o conteúdo publicado do relatório, incluindo tracebacks e o log completo, fica público junto com o site.</p>
       </div>
       <div class="hero-actions">
-        <button id="run-tests" class="button button-primary" type="button">
-          <span class="button-icon" aria-hidden="true">↻</span>
-          Executar novamente
-        </button>
+        <a class="button button-primary" href="https://github.com/jottacostta/especialista-direito-do-consumidor/actions/workflows/validate-catalog.yml" target="_blank" rel="noopener noreferrer">
+          <span class="button-icon" aria-hidden="true">↗</span>
+          Ver workflow no GitHub
+        </a>
         <button id="download-report" class="button button-secondary" type="button" disabled>Baixar JSON</button>
+        <p class="ci-note">Os testes rodam no CI. Use a página Actions para acompanhar ou reexecutar uma validação.</p>
       </div>
     </section>
 
-    <div id="live-status" class="live-status" role="status" aria-live="polite">Carregando o relatório…</div>
+    <div id="live-status" class="live-status" role="status" aria-live="polite" data-state="loading">Carregando o relatório público…</div>
+    <div id="report-error" class="report-state" role="alert" hidden></div>
 
     <section class="summary-grid" aria-label="Resumo da execução">
       <article class="metric-card metric-total">
         <span class="metric-label">Casos executados</span>
         <strong id="metric-total" class="metric-value">—</strong>
-        <span id="metric-groups" class="metric-caption">Aguardando execução</span>
+        <span id="metric-groups" class="metric-caption">Aguardando relatório</span>
       </article>
       <article class="metric-card metric-passed">
         <span class="metric-label">Aprovados</span>
@@ -60,7 +62,7 @@
 
     <section class="progress-panel" aria-label="Progresso dos testes aprovados">
       <div class="progress-copy">
-        <span id="progress-label">Aguardando execução</span>
+        <span id="progress-label">Aguardando relatório</span>
         <span id="progress-percent">—</span>
       </div>
       <div class="progress-track" role="progressbar" aria-label="Percentual de testes aprovados" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -81,7 +83,7 @@
         <label class="search-field">
           <span class="visually-hidden">Buscar nos testes</span>
           <span class="search-icon" aria-hidden="true">⌕</span>
-          <input id="search-tests" type="search" placeholder="Buscar por teste ou classe…" autocomplete="off">
+          <input id="search-tests" type="search" placeholder="Buscar por teste ou grupo…" autocomplete="off">
         </label>
         <label class="select-field">
           <span class="visually-hidden">Filtrar por resultado</span>
@@ -109,15 +111,15 @@
 
     <details class="console-panel">
       <summary>
-        <span><span class="eyebrow">SAÍDA ORIGINAL</span><strong>Log completo do unittest</strong></span>
+        <span><span class="eyebrow">SAÍDA ORIGINAL</span><strong>Log completo do runner JavaScript</strong></span>
         <span class="summary-hint">Abrir log</span>
       </summary>
-      <pre id="console-output" class="console-output">O log aparecerá após a execução.</pre>
+      <pre id="console-output" class="console-output">O log aparecerá quando o relatório estiver disponível.</pre>
     </details>
 
     <footer class="footer-note">
       <span class="footer-lock" aria-hidden="true">●</span>
-      Este painel roda em um servidor local separado. O relatório fica somente em memória durante a sessão e não é enviado ao deploy público.
+      Este painel é estático e não coleta dados. O relatório publicado, incluindo tracebacks e o log completo, é público junto com o site.
     </footer>
   </main>
 </body>

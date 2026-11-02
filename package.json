@@ -1,0 +1,11 @@
+{
+  "name": "especialista-direito-do-consumidor",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/run-tests.mjs",
+    "validate:catalog": "node scripts/validate_legislation.mjs",
+    "build:pages": "node scripts/build-pages.mjs",
+    "preview": "npm test && npm run validate:catalog -- --strict-duplicates && npm run build:pages && node scripts/serve-pages.mjs"
+  }
+}

@@ -1,6 +1,6 @@
-"use strict";
+import { filterRules, validateGuideBundle } from "./guide-core.js";
 
-const state = { law: null, categories: [], rules: [], category: "", query: "" };
+const state = { bundle: null, category: "", query: "" };
 const searchForm = document.querySelector("#search-form");
 const searchInput = document.querySelector("#search-input");
 const filtersRoot = document.querySelector("#category-filters");
@@ -19,21 +19,14 @@ function element(tag, className, text) {
   return node;
 }
 
-function normalized(text) {
-  return String(text ?? "")
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleLowerCase("pt-BR");
-}
-
 function formatDate(isoDate) {
   const parts = String(isoDate || "").split("-");
   return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : "data não informada";
 }
 
 function showLaw(law) {
-  state.law = law;
   lawStatus.textContent = `Marcado como ${law.status} no catálogo · verificado em ${formatDate(law.verification_date)}`;
+  lawLink.hidden = true;
   if (law.official_source_url && new URL(law.official_source_url).protocol === "https:") {
     lawLink.href = law.official_source_url;
     lawLink.hidden = false;
@@ -69,7 +62,6 @@ function makeFilterButton(label, value) {
 }
 
 function renderFilters(categories) {
-  state.categories = categories;
   filtersRoot.replaceChildren();
   filtersRoot.append(makeFilterButton("Todos os temas", ""));
   categories.forEach((category) => filtersRoot.append(makeFilterButton(category, category)));
@@ -121,20 +113,11 @@ function makeRuleCard(rule, index) {
 }
 
 function renderRules() {
-  const term = normalized(state.query.trim());
-  const matches = state.rules.filter((rule) => {
-    if (state.category && rule.category !== state.category) return false;
-    if (!term) return true;
-    const content = normalized([
-      rule.title, rule.category, rule.summary, rule.when_applicable,
-      ...rule.articles, ...rule.checklist, rule.safe_response, rule.caution,
-    ].join(" "));
-    return content.includes(term);
-  });
-
+  if (!state.bundle) return;
+  const matches = filterRules(state.bundle.rules, state.query, state.category);
   rulesRoot.replaceChildren();
   matches.forEach((rule, index) => rulesRoot.append(makeRuleCard(rule, index)));
-  const total = state.rules.length;
+  const total = state.bundle.total_rules;
   countRoot.textContent = matches.length === total
     ? `${total} referências temáticas`
     : `${matches.length} de ${total} referências encontradas`;
@@ -144,12 +127,15 @@ function renderRules() {
 
 async function initialize() {
   try {
-    const response = await fetch("/api/rules", { headers: { Accept: "application/json" }, cache: "no-store" });
-    const payload = await response.json();
-    if (!response.ok) throw new Error(payload.error || "Não foi possível consultar o catálogo.");
-    state.rules = payload.rules;
-    showLaw(payload.law);
-    renderFilters(payload.categories);
+    const bundleUrl = new URL("./data/cdc-guide.json", document.baseURI);
+    const response = await fetch(bundleUrl, {
+      headers: { Accept: "application/json" },
+      cache: "no-cache",
+    });
+    if (!response.ok) throw new Error(`Não foi possível carregar o bundle do CDC (HTTP ${response.status}).`);
+    state.bundle = validateGuideBundle(await response.json());
+    showLaw(state.bundle.law);
+    renderFilters(state.bundle.categories);
     renderRules();
   } catch (error) {
     lawStatus.textContent = "Fonte do catálogo indisponível";

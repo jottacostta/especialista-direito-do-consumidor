@@ -1,51 +1,78 @@
-name: Validate legal catalog
+name: Validate catalog and deploy Pages
 
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: catalog-validation-${{ github.event.pull_request.number || github.ref }}
+  group: pages-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  validate:
+  validate-and-build:
     name: validate-catalog
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          fetch-depth: 0
+          node-version: "22"
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Validate legislation records and reject duplicate keys
+        run: node scripts/validate_legislation.mjs --strict-duplicates
+
+      - name: Run JavaScript unit and integration checks
+        run: npm test
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check public/app.js
+          node --check public/guide-core.js
+          node --check scripts/catalog-data.mjs
+          node --check scripts/build-pages.mjs
+          node --check scripts/run-tests.mjs
+          node --check scripts/serve-pages.mjs
+          node --check tools/test-dashboard/app.js
+
+      - name: Build static site and public test report
+        run: npm run build:pages
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          python-version: "3.12"
-
-      - name: Compile Python modules
-        run: python -m py_compile api/health.py api/rules.py backend/catalog.py backend/http_utils.py backend/server.py backend/test_dashboard.py scripts/validate_legislation.py
-
-      - name: Test Python application
-        run: python -m unittest discover -s tests -v
-
-      - name: Check frontend JavaScript syntax
-        run: node --check public/app.js
-
-      - name: Check test dashboard JavaScript syntax
-        run: node --check tools/test-dashboard/app.js
-
-      - name: Validate legislation records
-        run: python scripts/validate_legislation.py
-
-      - name: Reject duplicate legislation keys
-        run: python scripts/validate_legislation.py --strict-duplicates
+          path: dist
 
       - name: Check diff formatting
+        if: github.event_name == 'pull_request'
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: git diff --check "$BASE_SHA...$HEAD_SHA"
+
+  deploy:
+    name: deploy-pages
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    needs: validate-and-build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

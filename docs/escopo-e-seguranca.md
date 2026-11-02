@@ -2,7 +2,7 @@
 
 ## Escopo do produto
 
-O produto em especificação deve apoiar gerentes e supervisores de supermercados na prevenção de perdas, verificação de discrepâncias e documentação de incidentes. Pode ajudar a conferir registros de compra e processos da loja, preparar uma conversa respeitosa e indicar quando encaminhar o caso a uma pessoa responsável.
+O produto em especificação deve apoiar gerentes e supervisores de supermercados na prevenção de perdas, verificação de discrepâncias e atendimento justo. O protótipo atual é somente uma consulta pública e estática a seis resumos iniciais do CDC. Não registra incidentes nem processa casos individuais.
 
 A ferramenta não determina intenção, culpa ou autoria de crime. Uma diferença em recibo, estoque, preço ou pagamento é um fato a verificar, não prova de má-fé. Antes de atribuir causa, considerar falhas de caixa, etiqueta, balança, cadastro, equipamento, treinamento e procedimento.
 
@@ -13,19 +13,21 @@ A ferramenta não determina intenção, culpa ou autoria de crime. Uma diferenç
 - Não criar score individual, lista negra, reconhecimento facial/biométrico, busca por imagem, monitoramento entre lojas ou alerta compartilhado sobre consumidores.
 - Não orientar busca pessoal ou de pertences, retenção, detenção, força física, ameaça, exposição pública, acusação sem comprovação ou recusa retaliatória de venda/atendimento.
 - Não automatizar denúncia, banimento, recusa de serviço ou qualquer decisão adversa. Exigir revisão por pessoa treinada e oportunidade de esclarecimento respeitosa.
-- Priorizar conferência de processo e resolução voluntária. Em risco imediato à segurança, orientar afastamento e acionamento do protocolo de emergência aprovado pela empresa, sem improvisar intervenção.
+- Priorizar conferência de processo e resolução voluntária. Em risco imediato, acionar protocolo de emergência aprovado, sem improvisar intervenção.
 - Utilizar políticas internas somente quando fornecidas e aprovadas. Não inventar procedimentos nem apresentar hipótese jurídica como obrigação.
 
 ## Privacidade e dados
 
-O desenvolvimento inicial deve usar dados sintéticos. O assistente não deve receber nomes, documentos, imagens, vídeo, biometria, dados de pagamento, dados sensíveis ou informações de crianças. Não inserir gravações de clientes em prompts ou exemplos. Se, no futuro, uma funcionalidade precisar de dados reais, a equipe deverá justificar finalidade e necessidade, definir base jurídica e transparência, limitar acessos, proteger logs, determinar retenção e exclusão e estabelecer auditoria e resposta a incidentes antes do piloto.
+O repositório e o site Pages são públicos. O código, o catálogo selecionado para o bundle e o relatório de testes serão acessíveis publicamente. Não incluir nomes, documentos, imagens, vídeo, biometria, dados de pagamento, dados sensíveis, dados de crianças, credenciais ou logs operacionais no código, nos índices, no relatório ou em exemplos. Use dados sintéticos.
 
-Qualquer tratamento real deve passar por revisão profissional de privacidade/LGPD e jurídica. Esta especificação não atesta conformidade legal. Configurações de retenção, permissões, criptografia e hospedagem permanecem pendentes.
+A aplicação estática não usa backend, cookies, localStorage, analytics ou formulário de relato. GitHub Pages pode registrar endereços IP para fins de segurança, conforme a documentação do serviço. A ausência de armazenamento pelo aplicativo não equivale a anonimato da visita nem a aprovação para uso operacional.
+
+Qualquer tratamento futuro de dados reais exige avaliação de finalidade, necessidade, base jurídica, transparência, acessos, segurança, retenção, exclusão, auditoria e resposta a incidentes antes do piloto, além de revisão profissional de privacidade/LGPD e jurídica. Esta especificação não atesta conformidade legal.
 
 ## Informação jurídica
 
-Quando responder sobre direitos do consumidor, políticas de preço ou outras obrigações, declarar a jurisdição e usar fonte oficial atual, com data de consulta quando relevante. O catálogo existente é seletivo: sua auditoria cobre 39 leis do Estado e do Município do Rio de Janeiro, não toda a legislação aplicável. Diferenciar texto legal, interpretação e política interna. Indicar incerteza e encaminhar dúvidas complexas à assessoria jurídica; não apresentar o sistema como advogado ou parecer profissional.
+Quando responder sobre direitos do consumidor, políticas de preço ou outras obrigações, declarar a jurisdição e usar fonte oficial atual, com data de consulta quando relevante. O catálogo é seletivo: a auditoria cobre 39 leis do Estado e do Município do Rio de Janeiro, não toda a legislação aplicável. Diferenciar texto legal, interpretação e política interna. Indicar incerteza e encaminhar dúvidas complexas à assessoria jurídica; não apresentar o sistema como advogado ou parecer profissional.
 
 ## Estágio e controle de mudanças
 
-O repositório contém um protótipo de consulta local somente de leitura para resumos editoriais do CDC vinculados ao catálogo, com interface HTML/CSS/JavaScript e API Python da biblioteca padrão. Há handlers file-based e configuração de segurança preparados para futura hospedagem Vercel, mas nenhum projeto ou deploy foi criado e nenhuma proteção de acesso foi verificada. O protótipo não inclui registro de incidentes, autenticação própria ou persistência. A existência dos handlers não representa aprovação jurídica, de privacidade ou segurança para uso real. Veja `docs/integracao-cdc.md`.
+A migração elimina o backend Python da aplicação e prepara uma página estática em HTML/CSS/JavaScript para GitHub Pages. Node.js executa validação, build e testes; não é backend de produção. A página só deve ser chamada de publicada após confirmação do deploy no GitHub Pages. Não há cadastro, autenticação, incidentes, armazenamento ou integração com sistemas da loja. A publicação pública não representa aprovação jurídica, de privacidade, segurança ou uso real. Veja `docs/integracao-cdc.md`.
