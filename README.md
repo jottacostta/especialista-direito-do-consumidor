@@ -20,18 +20,29 @@ A interface permite pesquisar e filtrar guias sobre preço e oferta, peso/quanti
 
 A aplicação falha de forma fechada: não serve o guia se encontrar entrada ausente ou duplicada, JSON malformado, fonte não HTTPS ou status diferente de `vigente`. Não possui rotas para gravar dados, não salva buscas e não registra consultas na camada da aplicação. Os resumos são uma camada editorial limitada; veja [`docs/integracao-cdc.md`](docs/integracao-cdc.md).
 
+## Painel de relatório dos testes
+
+Para abrir o painel local que executa e apresenta os testes unitários e de integração, na raiz do repositório rode:
+
+```bash
+python3 -m backend.test_dashboard
+```
+
+Acesse `http://127.0.0.1:8765`. O painel mostra cada caso, resultado, camada, duração e traceback; inclui o log completo do `unittest`, filtros e download JSON. **É uma ferramenta de desenvolvimento local**, servida em `127.0.0.1`; não persiste o relatório e fica fora de `public/`, portanto não é incluída no deploy Vercel. Encerre com `Ctrl+C`. Veja [`docs/painel-testes.md`](docs/painel-testes.md).
+
 ## Vercel
 
-A branch contém configuração preparada para o modelo file-based da Vercel: `public/` contém os arquivos estáticos e `api/health.py` e `api/rules.py` são os handlers Python para as rotas da API. `vercel.json` declara os arquivos JSON de que as funções precisam e os cabeçalhos de segurança. O servidor `backend.server` continua sendo apenas para execução local.
+O repositório tem configuração preparada para o modelo file-based da Vercel: `public/` contém os arquivos estáticos e `api/health.py` e `api/rules.py` são os handlers Python para as rotas da API. `vercel.json` declara os arquivos JSON de que as funções precisam e os cabeçalhos de segurança. O servidor `backend.server` continua sendo apenas para execução local.
 
-**Ainda não há deploy ativo.** Para ativar o deploy automático a partir do GitHub, o workspace Vercel precisa ter acesso ao repositório privado e a proteção de implantação precisa ser configurada e verificada. O PR com a aplicação ainda precisa ser mesclado em `main` com autorização explícita da pessoa responsável. Não publicar nem tratar a aplicação como pronta para produção enquanto isso estiver pendente.
+**Ainda não há deploy ativo.** Para ativar o deploy automático a partir do GitHub, o workspace Vercel precisa ter acesso ao repositório privado e a proteção de implantação precisa ser configurada e verificada.
 
 ## Verificações
 
 ```bash
 python3 -m unittest discover -s tests -v
-python3 -m py_compile api/health.py api/rules.py backend/catalog.py backend/http_utils.py backend/server.py scripts/validate_legislation.py
+python3 -m py_compile api/health.py api/rules.py backend/catalog.py backend/http_utils.py backend/server.py backend/test_dashboard.py scripts/validate_legislation.py
 node --check public/app.js
+node --check tools/test-dashboard/app.js
 python3 scripts/validate_legislation.py --strict-duplicates
 ```
 
@@ -44,12 +55,9 @@ O workflow do GitHub executa essas verificações em Pull Requests.
 ## Documentação
 
 - [`docs/integracao-cdc.md`](docs/integracao-cdc.md) — execução local, estrutura Vercel, fontes e limites.
+- [`docs/painel-testes.md`](docs/painel-testes.md) — execução e escopo do painel de testes local.
 - [`docs/requisitos-produto.md`](docs/requisitos-produto.md) — escopo maior do produto e itens ainda não implementados.
 - [`docs/escopo-e-seguranca.md`](docs/escopo-e-seguranca.md) — salvaguardas, privacidade e segurança.
 - [`docs/roteiro.md`](docs/roteiro.md) — próximos passos de revisão e validação.
 - [`docs/RETOMADA_CHATGPT.md`](docs/RETOMADA_CHATGPT.md) — estado técnico e continuidade.
 - [`legislacao/`](legislacao/) — catálogo legal e fontes oficiais.
-
-## Próximas revisões
-
-Revisar os resumos com profissional habilitado em direito do consumidor e responsáveis por operação e privacidade. Antes de qualquer publicação ou uso real, verificar autenticação e proteção, segurança, governança, retenção e resposta a incidentes. Essas capacidades não fazem parte do protótipo.
