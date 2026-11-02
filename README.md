@@ -2,9 +2,9 @@
 
 Aplicação informativa para gerentes e supervisores consultarem referências iniciais do Código de Defesa do Consumidor em situações comuns de supermercado. A interface é feita em HTML, CSS e JavaScript e foi preparada para publicação estática no GitHub Pages; Node.js é usado apenas para validação, build e testes. Não há backend Python.
 
-> **Estado:** a migração para GitHub Pages está em revisão. O site somente estará disponível no endereço-alvo após a publicação ser habilitada e o workflow de deploy terminar com sucesso: `https://jottacostta.github.io/especialista-direito-do-consumidor/`.
+> **Estado:** publicado no GitHub Pages em 2026-11-02. [Abrir o guia do CDC](https://jottacostta.github.io/especialista-direito-do-consumidor/). O último deploy verificado foi o [run 41516154912](https://github.com/jottacostta/especialista-direito-do-consumidor/actions/runs/41516154912).
 
-A consulta é somente de leitura. Não registra incidentes, não recebe relatos, não armazena buscas, não identifica clientes, não conclui má-fé ou culpa e não substitui revisão humana ou orientação jurídica. A página publicada será pública.
+A consulta é somente de leitura. Não registra incidentes, não recebe relatos, não armazena buscas, não identifica clientes, não conclui má-fé ou culpa e não substitui revisão humana ou orientação jurídica. O repositório e a página são públicos.
 
 ## O que contém
 
@@ -25,7 +25,7 @@ node scripts/serve-pages.mjs
 
 A prévia local abre em `http://127.0.0.1:4173`. O servidor Node é somente uma ferramenta de desenvolvimento para servir arquivos estáticos e não faz parte do site publicado. Para automatizar testes, validação, build e prévia numa única sequência, use `npm run preview`.
 
-O workflow valida o catálogo, roda os testes JavaScript, monta o artefato estático e publica Pages após um push aprovado em `main`. Pull requests executam validações sem publicar a página.
+O workflow valida o catálogo, roda os testes JavaScript, monta o artefato estático e publica Pages a cada push em `main` aprovado ou execução manual nessa branch. Pull requests executam validações sem publicar a página.
 
 ## Catálogo e limites jurídicos
 

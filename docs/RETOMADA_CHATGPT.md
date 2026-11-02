@@ -1,50 +1,34 @@
 # Retomada do projeto — para ChatGPT
 
-Atualizado em 2026-11-02. A base `main` parte de `c886f96`. A migração está na branch remota `feature/github-pages-static`. PR #4 está aberto: https://github.com/jottacostta/especialista-direito-do-consumidor/pull/4. Sempre confirme o head SHA atual antes de agir.
+Atualizado em 2026-11-02. PR #4 foi mesclado por squash em `main` no commit `450bab5`. O repositório está público e o GitHub Pages está ativo. Confirme o SHA e o estado do CI novamente antes de qualquer mudança futura.
 
-## Objetivo e decisão atual
+## Estado publicado
 
-O projeto visa apoiar gerentes e supervisores de supermercados na prevenção de perdas, conferência de discrepâncias e atendimento justo, sem presumir má-fé, avaliar caráter ou decidir culpa de consumidores.
+- Repositório: [jottacostta/especialista-direito-do-consumidor](https://github.com/jottacostta/especialista-direito-do-consumidor)
+- Site: [https://jottacostta.github.io/especialista-direito-do-consumidor/](https://jottacostta.github.io/especialista-direito-do-consumidor/)
+- Painel de testes: [https://jottacostta.github.io/especialista-direito-do-consumidor/testes/](https://jottacostta.github.io/especialista-direito-do-consumidor/testes/)
+- Fonte Pages em Settings → Pages: **GitHub Actions**.
+- Deploy confirmado: run [41516154912](https://github.com/jottacostta/especialista-direito-do-consumidor/actions/runs/41516154912), evento `workflow_dispatch`, `main` no SHA `450bab5de481c13e5b47b023bca8d55da92ac948`, conclusão `success`.
+- Verificação HTTPS após o deploy: `/`, `/testes/`, `/data/cdc-guide.json` e `/data/test-report.json` responderam HTTP 200. O bundle publicado contém seis guias e o relatório mostra 13/13 testes aprovados.
 
-A pessoa responsável autorizou tornar público o repositório CDC inteiro e pediu uma aplicação no modelo estático do EscalaDominical. Também decidiu deixar de desenvolver em Python e concentrar o protótipo em HTML, CSS e JavaScript. O PR remove os arquivos Python de aplicação, testes e validação da árvore atual, bem como `vercel.json`; a história Git anterior ainda contém o protótipo Python. Não reescreva o histórico para removê-lo sem autorização específica.
+O primeiro run de `push` à `main` falhou apenas na etapa Configure GitHub Pages porque Pages ainda não estava habilitado. Em seguida, foi selecionada a fonte **GitHub Actions** na tela Settings → Pages e o workflow foi executado manualmente; o run 41516154912 completou build e deploy. A configuração automática agora está ativa: push em `main` ou despacho manual valida, testa, constrói e tenta publicar o artefato. Pull requests validam sem publicar.
 
-## Implementação no PR #4
+## Objetivo e decisão de produto
 
-- A interface HTML/CSS/JavaScript fica em `public/`, usa caminhos relativos e carrega `data/cdc-guide.json` da mesma origem.
-- `scripts/catalog-data.mjs` valida a presença exata de um registro federal da Lei nº 8.078/1990, status `vigente`, data e fontes HTTPS e regras editoriais antes de criar o bundle.
-- `scripts/validate_legislation.mjs` substitui o validador Python mantendo o schema e a opção `--strict-duplicates`.
-- `scripts/run-tests.mjs` executa casos JavaScript e gera `test-results/latest.json`; `scripts/build-pages.mjs` compõe `dist/` com o site e o painel `/testes/`.
-- `tools/test-dashboard/` é um visualizador público e estático. Não roda testes sob demanda; aponta ao GitHub Actions. O CI não publica novo Pages quando testes ou catálogo falham.
-- `.github/workflows/validate-catalog.yml` testa pull requests e prepara deploy automático pelo GitHub Pages após aprovação em `main` ou despacho manual nessa branch.
-- O servidor Node em `scripts/serve-pages.mjs` é apenas uma prévia estática local em `127.0.0.1`; não é backend de produção.
+O projeto apoia gerentes e supervisores de supermercados na prevenção de perdas, conferência de discrepâncias e atendimento justo, sem presumir má-fé, avaliar caráter ou decidir culpa de consumidores.
 
-URL-alvo após habilitar Pages: `https://jottacostta.github.io/especialista-direito-do-consumidor/`. Painel: `/testes/`. Nenhum deploy foi confirmado. O repositório ainda está privado na última inspeção, e a API de Pages retornou 403 ao conector; não afirme que o site está ativo. A pessoa responsável autorizou tornar o repositório público após a revisão. Pode ser necessário habilitar em Settings → Pages → Build and deployment → Source: GitHub Actions; se a API do conector continuar sem permissão, pedir que o responsável faça esse ajuste.
+A aplicação atual é uma consulta somente de leitura a seis resumos editoriais do Código de Defesa do Consumidor. A interface é HTML, CSS e JavaScript. Node.js é usado apenas para validação, build, testes e prévia local. Não há backend, formulário, autenticação, armazenamento, API ou coleta de incidentes.
 
-## Validações locais e estado do CI
+A pessoa responsável autorizou tornar público o repositório CDC inteiro e a publicação estática semelhante ao EscalaDominical. Os arquivos Python e a configuração Vercel foram removidos da árvore atual, mas o histórico Git anterior ainda os contém. Não reescreva o histórico sem autorização específica.
 
-- `npm test` — 13/13 casos aprovados, incluindo busca, validação do bundle, schema JSONL, duplicatas, build Pages e prévia HTTP.
-- `npm run validate:catalog -- --strict-duplicates` — 16 arquivos JSONL e 229 registros, sem duplicatas; isso é validação estrutural, não auditoria jurídica automática.
-- `npm run build:pages` — gerou `dist/` com seis guias e relatório de 13/13 testes.
-- Smoke HTTP — homepage, assets CSS/JS, bundle CDC, painel, relatório JSON e rotas estáticas responderam; POST recusado com 405; a suíte testa traversal e symlink externo.
-- `node --check` e `git diff --check` locais — aprovados.
-- CI inicial do PR #4 no SHA `20564e7` falhou exclusivamente em `Check diff formatting`: `actions/checkout` usou histórico raso e a base não estava disponível para `git diff BASE...HEAD`. Build, testes e upload passaram; deploy foi corretamente ignorado no PR. O workflow foi corrigido com `fetch-depth: 0`. O run `41513072342` passou no SHA `e5fc938`; este handoff adiciona outro commit documental, então confira um check verde no head atual antes de qualquer merge.
-- Uma busca limitada por padrões conhecidos de chaves, CPF, e-mail e nomes de arquivos sensíveis não encontrou ocorrências no snapshot da mudança. `gitleaks` não estava instalado; essa busca não garante ausência de todo dado sensível. Repetir revisão dos arquivos do PR antes de tornar o repo público.
+## Arquitetura e validação
 
-## CDC e salvaguardas
-
-O bundle usa um registro federal do CDC e seis guias editoriais: preço/oferta; peso/quantidade; validade/segurança; troca/desistência; atendimento/práticas comerciais; cobrança/pagamentos. Os resumos ainda precisam de revisão profissional jurídica e operacional; não cobrem todos os artigos, exceções, normas estaduais/municipais ou mudanças legais. A auditoria anterior cobriu 39 atos selecionados do RJ, não todo o universo legal.
-
-Não implementar score individual, perfil por características pessoais, lista negra, reconhecimento facial/biométrico, rastreamento entre lojas, acusação automática, banimento ou recusa automatizada. Não recomendar busca, retenção, detenção, força, exposição pública ou discriminação. Verificar primeiro erros de caixa, cadastro, preço, leitura, treinamento, equipamento e processo. Qualquer uso real exige revisão jurídica, de privacidade e segurança.
-
-O site e o relatório de testes serão públicos. Não incluir dados reais de clientes/trabalhadores, credenciais, registros de incidentes ou logs operacionais. A aplicação não tem backend, autenticação, formulário, armazenamento local, cookies ou analytics.
-
-## Próximas etapas
-
-1. Verificar o commit documental e o resultado do CI disparado para o head atual do PR #4.
-2. Atualizar o corpo do PR para registrar o SHA e os checks verdes atuais.
-3. Não mesclar sem pedido explícito de merge e checks obrigatórios aprovados.
-4. Após o merge, mudar a visibilidade do repositório para público (autorizado), habilitar Pages com fonte GitHub Actions, acompanhar o deploy e confirmar a URL antes de chamá-la ativa.
-5. Atualizar README e esta passagem de bastão depois de confirmar a publicação real.
+- `public/` contém o site; `data/cdc-guide.json` é gerado do registro federal do CDC e de seis guias editoriais.
+- `scripts/catalog-data.mjs` valida o registro federal exato da Lei nº 8.078/1990, status, data, URLs oficiais e regras antes do build.
+- `scripts/validate_legislation.mjs` valida os 16 índices JSONL e pode rejeitar duplicatas com `--strict-duplicates`.
+- `scripts/run-tests.mjs` executa os casos JavaScript e gera o relatório que aparece no painel em `/testes/`.
+- `scripts/build-pages.mjs` gera `dist/`; `scripts/serve-pages.mjs` serve apenas a prévia local em `127.0.0.1`.
+- `.github/workflows/validate-catalog.yml` roda validação, testes e build; publica somente em `main` ou em `workflow_dispatch` na `main`, depois do sucesso.
 
 Comandos principais:
 
@@ -54,3 +38,18 @@ npm run validate:catalog -- --strict-duplicates
 npm run build:pages
 npm run preview
 ```
+
+## Limites legais, segurança e privacidade
+
+O bundle contém seis resumos sobre preço/oferta; peso, medida e quantidade; validade/segurança; troca/desistência; atendimento/práticas comerciais; cobrança/pagamentos. Não são transcrições integrais nem pareceres. A data vem do catálogo e não se atualiza automaticamente. Os resumos precisam de revisão profissional jurídica e operacional. A auditoria anterior cobriu 39 atos selecionados do Estado e do Município do Rio de Janeiro, não toda a legislação aplicável.
+
+Não implementar score individual, perfil por características pessoais, lista negra, reconhecimento facial/biométrico, rastreamento entre lojas, acusação automática, banimento ou recusa automatizada. Não recomendar discriminação, busca, retenção, detenção, força, exposição pública ou retaliação. Verificar primeiro erros de caixa, cadastro, preço, leitura, treinamento, equipamento e processo; manter revisão humana e oportunidade de esclarecimento.
+
+O repositório, a página e o relatório são públicos. Não incluir dados reais de clientes/trabalhadores, credenciais, registros de incidentes ou logs operacionais. A busca por padrões conhecidos de segredos/PII feita antes da publicação não substitui uma ferramenta completa; `gitleaks` não estava instalado. Se alguém identificar credenciais ou dados indevidos no histórico público, revogar/remediar com prioridade e seguir a política do GitHub.
+
+## Próximas etapas
+
+1. Obter revisão profissional dos seis guias do CDC e dos limites de uso antes de qualquer piloto.
+2. Manter o relatório de testes limitado a dados sintéticos e verificar o CI do head atual em cada mudança.
+3. Ampliar a legislação somente com fontes oficiais e mantendo cobertura, vigência e auditoria explicitamente delimitadas.
+4. Qualquer mudança futura deve usar branch e PR; não fazer merge sem pedido explícito e checks verdes no head atual.

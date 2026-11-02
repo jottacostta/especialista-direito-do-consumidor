@@ -1,6 +1,6 @@
 # Painel estático de relatório de testes
 
-O site contém um painel de relatório em `/testes/`. Ele exibe métricas, cada caso, camada, duração, detalhes de falha, saída textual e permite baixar o JSON. A página busca `data/test-report.json` no mesmo artefato Pages.
+O site contém um painel público em [`/testes/`](https://jottacostta.github.io/especialista-direito-do-consumidor/testes/), dentro do [guia publicado](https://jottacostta.github.io/especialista-direito-do-consumidor/). Ele exibe métricas, cada caso, camada, duração, detalhes de falha, saída textual e permite baixar o JSON. A página busca `data/test-report.json` no mesmo artefato Pages.
 
 ## Como o relatório é gerado
 

@@ -1,10 +1,10 @@
 # Requisitos de produto — apoio à gestão em supermercados
 
-- **Estado:** protótipo somente de leitura para consulta de seis resumos editoriais do CDC; migração para aplicação estática e GitHub Pages em revisão. Os fluxos de incidente e demais capacidades continuam em especificação.
+- **Estado:** protótipo publicado, somente de leitura, para consulta de seis resumos editoriais do CDC. Os fluxos de incidentes e demais capacidades continuam em especificação.
 - **Público principal:** gerentes e supervisores de supermercados, com participação de equipes autorizadas e treinadas.
-- **Stack escolhida para esta etapa:** HTML, CSS e JavaScript no navegador; GitHub Pages para arquivos estáticos; Node.js sem dependências externas apenas para validação, build, testes e prévia local. Não há backend Python ou API no produto.
+- **Stack escolhida nesta etapa:** HTML, CSS e JavaScript no navegador; GitHub Pages para arquivos estáticos; Node.js sem dependências externas apenas para validação, build, testes e prévia local. Não há backend Python ou API no produto.
 
-O protótipo vincula os seis guias ao registro federal da Lei nº 8.078/1990 no catálogo. Não inclui autenticação, cadastro de casos, armazenamento, integração com sistemas da loja ou inteligência artificial. A página e o relatório de testes são públicos. A revisão profissional dos resumos permanece pendente. Consulte `docs/integracao-cdc.md`.
+O protótipo vincula os seis guias ao registro federal da Lei nº 8.078/1990 no catálogo. Não inclui autenticação, cadastro de casos, armazenamento, integração com sistemas da loja ou inteligência artificial. O repositório, a página e o relatório de testes são públicos. A revisão profissional dos resumos permanece pendente. Consulte `docs/integracao-cdc.md`.
 
 ## Objetivo
 
@@ -41,7 +41,7 @@ Não deve concluir culpa, redigir acusação como fato, gerar boletim de ocorrê
 
 ## Dados, publicidade e privacidade
 
-O repositório e a página Pages serão públicos conforme a decisão do responsável. O código e o relatório de CI não podem incluir dados pessoais ou operacionais. Testes e demonstrações usam dados sintéticos. O app atual não tem backend nem persistência, mas isso não constitui aprovação jurídica, de segurança ou de privacidade para uso operacional. Se algum fluxo futuro precisar de dados reais, definir finalidade, base jurídica, transparência, acesso, retenção, exclusão e resposta a incidentes e submeter o desenho a revisão profissional.
+O repositório e a página Pages são públicos conforme a decisão do responsável. O código e o relatório de CI não podem incluir dados pessoais ou operacionais. Testes e demonstrações usam dados sintéticos. O app atual não tem backend nem persistência, mas isso não constitui aprovação jurídica, de segurança ou de privacidade para uso operacional. Se algum fluxo futuro precisar de dados reais, definir finalidade, base jurídica, transparência, acesso, retenção, exclusão e resposta a incidentes e submeter o desenho a revisão profissional.
 
 ## Critérios de aceitação do produto futuro
 

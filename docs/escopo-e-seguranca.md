@@ -2,7 +2,7 @@
 
 ## Escopo do produto
 
-O produto em especificação deve apoiar gerentes e supervisores de supermercados na prevenção de perdas, verificação de discrepâncias e atendimento justo. O protótipo atual é somente uma consulta pública e estática a seis resumos iniciais do CDC. Não registra incidentes nem processa casos individuais.
+O produto em especificação deve apoiar gerentes e supervisores de supermercados na prevenção de perdas, verificação de discrepâncias e atendimento justo. O protótipo publicado é somente uma consulta estática a seis resumos iniciais do CDC. Não registra incidentes nem processa casos individuais.
 
 A ferramenta não determina intenção, culpa ou autoria de crime. Uma diferença em recibo, estoque, preço ou pagamento é um fato a verificar, não prova de má-fé. Antes de atribuir causa, considerar falhas de caixa, etiqueta, balança, cadastro, equipamento, treinamento e procedimento.
 
@@ -18,7 +18,7 @@ A ferramenta não determina intenção, culpa ou autoria de crime. Uma diferenç
 
 ## Privacidade e dados
 
-O repositório e o site Pages são públicos. O código, o catálogo selecionado para o bundle e o relatório de testes serão acessíveis publicamente. Não incluir nomes, documentos, imagens, vídeo, biometria, dados de pagamento, dados sensíveis, dados de crianças, credenciais ou logs operacionais no código, nos índices, no relatório ou em exemplos. Use dados sintéticos.
+O repositório e o site Pages são públicos. O código, o catálogo selecionado para o bundle e o relatório de testes são acessíveis publicamente. Não incluir nomes, documentos, imagens, vídeo, biometria, dados de pagamento, dados sensíveis, dados de crianças, credenciais ou logs operacionais no código, nos índices, no relatório ou em exemplos. Use dados sintéticos.
 
 A aplicação estática não usa backend, cookies, localStorage, analytics ou formulário de relato. GitHub Pages pode registrar endereços IP para fins de segurança, conforme a documentação do serviço. A ausência de armazenamento pelo aplicativo não equivale a anonimato da visita nem a aprovação para uso operacional.
 
@@ -30,4 +30,4 @@ Quando responder sobre direitos do consumidor, políticas de preço ou outras ob
 
 ## Estágio e controle de mudanças
 
-A migração elimina o backend Python da aplicação e prepara uma página estática em HTML/CSS/JavaScript para GitHub Pages. Node.js executa validação, build e testes; não é backend de produção. A página só deve ser chamada de publicada após confirmação do deploy no GitHub Pages. Não há cadastro, autenticação, incidentes, armazenamento ou integração com sistemas da loja. A publicação pública não representa aprovação jurídica, de privacidade, segurança ou uso real. Veja `docs/integracao-cdc.md`.
+A migração para HTML/CSS/JavaScript foi concluída e o site está publicado no GitHub Pages. O deploy verificado é o run `41516154912`; mudanças futuras só devem ser tratadas como publicadas depois que o deploy correspondente concluir com sucesso. Node.js executa validação, build, testes e prévia local; não é backend de produção. Não há cadastro, autenticação, incidentes, armazenamento ou integração com sistemas da loja. A publicação pública não representa aprovação jurídica, de privacidade, segurança ou uso real. Veja `docs/integracao-cdc.md`.
