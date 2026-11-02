@@ -1,12 +1,12 @@
 # Roteiro de evolução
 
-Há uma consulta informativa somente de leitura ao CDC em migração para HTML, CSS, JavaScript e GitHub Pages. Publicar a página não significa aprovação jurídica, operacional, de privacidade ou segurança para uso real. A validação profissional e a governança continuam pendentes antes de qualquer piloto.
+O protótipo inicial de consulta somente de leitura ao CDC está publicado no GitHub Pages. A publicação técnica não significa aprovação jurídica, operacional, de privacidade ou segurança para uso real. A revisão profissional e a governança continuam pendentes antes de qualquer piloto.
 
-## Etapa 1 — Fechar a migração técnica estática
+## Etapa 1 — Publicação técnica estática (concluída em 2026-11-02)
 
-- Manter o site como arquivos estáticos sem API, servidor de aplicação, armazenamento ou coleta de incidentes.
-- Validar o bundle do CDC a partir do catálogo e gerar relatório de testes com JavaScript no CI.
-- Confirmar caminho relativo correto no subpath GitHub Pages e revisar o artefato antes de publicar.
+- O site usa apenas arquivos estáticos HTML, CSS e JavaScript, sem API, servidor de aplicação, armazenamento ou coleta de incidentes.
+- O workflow valida o bundle do CDC, roda os testes JavaScript, constrói o relatório e publica somente após a aprovação em `main` ou despacho manual nessa branch.
+- A página está disponível em [GitHub Pages](https://jottacostta.github.io/especialista-direito-do-consumidor/) e o painel em [`/testes/`](https://jottacostta.github.io/especialista-direito-do-consumidor/testes/).
 - Não adicionar dados reais, credenciais ou históricos operacionais ao repositório público.
 
 ## Etapa 2 — Validar problema e usuários
@@ -23,11 +23,11 @@ Há uma consulta informativa somente de leitura ao CDC em migração para HTML, 
 - Excluir score individual, lista negra, reconhecimento facial/biométrico, busca por imagem, monitoramento entre lojas e decisão adversa automática.
 - Não iniciar piloto com dados reais antes de aprovar finalidade, necessidade, transparência, controles e avaliação profissional.
 
-## Etapa 4 — Validar o protótipo de consulta
+## Etapa 4 — Manter a validação do protótipo
 
-- Testar bundle válido, ausente, duplicado, com status não confirmado, URL inválida e regra malformada.
+- Continuar testando bundle válido, ausente, duplicado, com status não confirmado, URL inválida e regra malformada.
 - Testar busca/filtros acessíveis, carregamento sob o subpath e comportamento sem dados.
-- Garantir que o CI não publique um novo site quando catálogo, testes ou build falharem.
+- Garantir que o CI não publique uma nova versão quando catálogo, testes ou build falharem.
 - Verificar que o painel publicado apresenta resultados do CI e não executa operações no navegador.
 
 ## Etapa 5 — Avaliar qualquer ampliação

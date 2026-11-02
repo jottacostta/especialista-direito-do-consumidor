@@ -4,7 +4,7 @@ Leia `docs/RETOMADA_CHATGPT.md`, `docs/requisitos-produto.md` e `docs/escopo-e-s
 
 ## Produto e estágio
 
-O repositório está migrando para uma aplicação estática de consulta informativa ao CDC, com HTML/CSS/JavaScript em `public/`. `scripts/build-pages.mjs` valida o registro do CDC e monta em `dist/` os arquivos publicados pelo GitHub Pages. `tools/test-dashboard/` é um painel estático para o relatório gerado pelo CI. O Node.js é ferramenta de validação, build e prévia local; não há backend de aplicação, armazenamento de incidentes ou endpoint de escrita. Não reintroduza Python, Vercel, API, autenticação improvisada ou dependência de serviço externo sem nova decisão do responsável. Não descreva o site como publicado até confirmar o deploy em Pages.
+O repositório contém uma aplicação estática publicada de consulta informativa ao CDC, com HTML/CSS/JavaScript em `public/`. `scripts/build-pages.mjs` valida o registro do CDC e monta em `dist/` os arquivos publicados pelo GitHub Pages. `tools/test-dashboard/` é um painel estático para o relatório gerado pelo CI. O Node.js é ferramenta de validação, build e prévia local; não há backend de aplicação, armazenamento de incidentes ou endpoint de escrita. Não reintroduza Python, Vercel, API, autenticação improvisada ou dependência de serviço externo sem nova decisão do responsável. Para mudanças futuras, só declare uma versão atualizada como publicada depois do deploy correspondente terminar com sucesso.
 
 O repositório e o site devem ser públicos. Nunca adicionar dados reais de clientes ou trabalhadores, credenciais, segredos, históricos operacionais ou arquivos de RH. O relatório publicado também é público; mantenha-o limitado a casos de teste sintéticos e metadados técnicos necessários.
 
