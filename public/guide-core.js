@@ -4,6 +4,20 @@ const RULE_FIELDS = [
   "checklist", "safe_response", "caution",
 ].sort();
 
+// Vocabulário de busca para encaminhar termos comuns ao guia editorial pertinente.
+// Estes sinônimos só afetam a recuperação; não acrescentam conteúdo ou conclusão jurídica.
+const SEARCH_ALIASES = Object.freeze({
+  "troca-desistencia": [
+    "substituição de produto",
+    "substituição de produtos",
+    "substituir produto",
+    "substituir produtos",
+    "produto substituto",
+    "produtos substitutos",
+    "troca por defeito",
+  ],
+});
+
 function isIsoDate(value) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const parsed = new Date(`${value}T00:00:00.000Z`);
@@ -122,6 +136,7 @@ export function filterRules(rules, query = "", category = "") {
     const content = [
       rule.title, rule.category, rule.summary, rule.when_applicable,
       ...rule.articles, ...rule.checklist, rule.safe_response, rule.caution,
+      ...(SEARCH_ALIASES[rule.id] || []),
     ].join(" ");
     return normalizeSearchText(content).includes(term);
   });
