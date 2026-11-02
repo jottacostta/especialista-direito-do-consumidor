@@ -1,63 +1,44 @@
-# Guia de atendimento e consulta ao CDC para supermercados
+# Guia do CDC para supermercados
 
-Repositório privado com um protótipo informativo para apoiar gerentes na consulta de regras do Código de Defesa do Consumidor em situações comuns de supermercado. A interface usa HTML/CSS/JavaScript e conversa com uma API Python que vincula os resumos ao catálogo legislativo do projeto.
+Aplicação informativa para gerentes e supervisores consultarem referências iniciais do Código de Defesa do Consumidor em situações comuns de supermercado. A interface é feita em HTML, CSS e JavaScript e foi preparada para publicação estática no GitHub Pages; Node.js é usado apenas para validação, build e testes. Não há backend Python.
 
-> **Escopo:** consulta somente de leitura. O protótipo não registra incidentes, não coleta dados de clientes, não conclui má-fé ou culpa e não substitui revisão humana ou orientação jurídica.
+> **Estado:** a migração para GitHub Pages está em revisão. O site somente estará disponível no endereço-alvo após a publicação ser habilitada e o workflow de deploy terminar com sucesso: `https://jottacostta.github.io/especialista-direito-do-consumidor/`.
 
-## Executar localmente
+A consulta é somente de leitura. Não registra incidentes, não recebe relatos, não armazena buscas, não identifica clientes, não conclui má-fé ou culpa e não substitui revisão humana ou orientação jurídica. A página publicada será pública.
 
-Requer Python 3.10 ou superior. O servidor local e as funções HTTP usam a biblioteca padrão; não há banco de dados nem chave de API.
+## O que contém
 
-```bash
-python3 -m backend.server
-```
+A tela apresenta seis guias editoriais sobre preço e oferta; peso, medida e quantidade; validade e segurança; troca e desistência; atendimento e práticas comerciais; cobrança e pagamentos. Durante o build, JavaScript confere o registro federal da Lei nº 8.078/1990 no catálogo e gera um bundle JSON estático. O navegador valida esse bundle e pesquisa os temas localmente. A data exibida é a data registrada no catálogo; não se atualiza automaticamente quando a legislação muda.
 
-Acesse `http://127.0.0.1:8000`. Para outra porta, use `python3 -m backend.server --port 8080`. O servidor de desenvolvimento só escuta em `127.0.0.1`; encerre com `Ctrl+C`.
+O painel de testes fica em `/testes/`. A suíte roda no CI e gera um relatório JSON público, exibido pelo painel após o build aprovado. A página não executa testes sob demanda; ela aponta para a execução do GitHub Actions.
 
-## Como funciona
+## Desenvolvimento e validação
 
-A interface permite pesquisar e filtrar guias sobre preço e oferta, peso/quantidade, validade e segurança de produtos, troca/desistência, práticas comerciais/atendimento e cobrança/pagamentos. A API Python valida e lê a entrada federal da Lei nº 8.078/1990 no catálogo JSONL antes de fornecer as regras. O status e a data mostrados são os que estão registrados no catálogo e não se atualizam automaticamente.
-
-A aplicação falha de forma fechada: não serve o guia se encontrar entrada ausente ou duplicada, JSON malformado, fonte não HTTPS ou status diferente de `vigente`. Não possui rotas para gravar dados, não salva buscas e não registra consultas na camada da aplicação. Os resumos são uma camada editorial limitada; veja [`docs/integracao-cdc.md`](docs/integracao-cdc.md).
-
-## Painel de relatório dos testes
-
-Para abrir o painel local que executa e apresenta os testes unitários e de integração, na raiz do repositório rode:
+Requer Node.js 22 ou superior. Não há dependências npm externas.
 
 ```bash
-python3 -m backend.test_dashboard
+npm test
+npm run validate:catalog -- --strict-duplicates
+npm run build:pages
+node scripts/serve-pages.mjs
 ```
 
-Acesse `http://127.0.0.1:8765`. O painel mostra cada caso, resultado, camada, duração e traceback; inclui o log completo do `unittest`, filtros e download JSON. **É uma ferramenta de desenvolvimento local**, servida em `127.0.0.1`; não persiste o relatório e fica fora de `public/`, portanto não é incluída no deploy Vercel. Encerre com `Ctrl+C`. Veja [`docs/painel-testes.md`](docs/painel-testes.md).
+A prévia local abre em `http://127.0.0.1:4173`. O servidor Node é somente uma ferramenta de desenvolvimento para servir arquivos estáticos e não faz parte do site publicado. Para automatizar testes, validação, build e prévia numa única sequência, use `npm run preview`.
 
-## Vercel
+O workflow valida o catálogo, roda os testes JavaScript, monta o artefato estático e publica Pages após um push aprovado em `main`. Pull requests executam validações sem publicar a página.
 
-O repositório tem configuração preparada para o modelo file-based da Vercel: `public/` contém os arquivos estáticos e `api/health.py` e `api/rules.py` são os handlers Python para as rotas da API. `vercel.json` declara os arquivos JSON de que as funções precisam e os cabeçalhos de segurança. O servidor `backend.server` continua sendo apenas para execução local.
+## Catálogo e limites jurídicos
 
-**Ainda não há deploy ativo.** Para ativar o deploy automático a partir do GitHub, o workspace Vercel precisa ter acesso ao repositório privado e a proteção de implantação precisa ser configurada e verificada.
+`legislacao/` contém 229 registros preliminares em 16 índices JSONL, sem duplicatas na última validação. O site usa somente o registro do CDC e os seis resumos editoriais; o restante do catálogo não é apresentado pela aplicação. O levantamento é seletivo e não exaustivo. Os resumos ainda precisam de revisão profissional jurídica e operacional; a auditoria do Rio de Janeiro cobriu 39 atos selecionados, não todo o universo legal.
 
-## Verificações
-
-```bash
-python3 -m unittest discover -s tests -v
-python3 -m py_compile api/health.py api/rules.py backend/catalog.py backend/http_utils.py backend/server.py backend/test_dashboard.py scripts/validate_legislation.py
-node --check public/app.js
-node --check tools/test-dashboard/app.js
-python3 scripts/validate_legislation.py --strict-duplicates
-```
-
-O workflow do GitHub executa essas verificações em Pull Requests.
-
-## Catálogo legislativo
-
-`legislacao/` contém 229 registros preliminares em 16 índices JSONL, sem duplicatas na última validação. O levantamento é seletivo, não exaustivo e não equivale à confirmação profissional da vigência de cada ato. A auditoria do Rio de Janeiro está em [`docs/auditoria-rj-2026-11-01.md`](docs/auditoria-rj-2026-11-01.md).
+O produto não classifica consumidores, não cria lista de suspeitos, score individual ou alerta entre lojas e não recomenda discriminação, busca, retenção, detenção, força, exposição pública ou recusa automática de atendimento. Confira erros de caixa, cadastro, preço, balança, sistema e processo antes de atribuir causa. Não use a tela para negar direitos, cobrar valores ou encerrar reclamações sem revisão humana.
 
 ## Documentação
 
-- [`docs/integracao-cdc.md`](docs/integracao-cdc.md) — execução local, estrutura Vercel, fontes e limites.
-- [`docs/painel-testes.md`](docs/painel-testes.md) — execução e escopo do painel de testes local.
-- [`docs/requisitos-produto.md`](docs/requisitos-produto.md) — escopo maior do produto e itens ainda não implementados.
-- [`docs/escopo-e-seguranca.md`](docs/escopo-e-seguranca.md) — salvaguardas, privacidade e segurança.
+- [`docs/integracao-cdc.md`](docs/integracao-cdc.md) — bundle estático, GitHub Pages, fonte legal e limites.
+- [`docs/painel-testes.md`](docs/painel-testes.md) — relatório estático e execuções de CI.
+- [`docs/requisitos-produto.md`](docs/requisitos-produto.md) — público, casos de uso e capacidades ainda não implementadas.
+- [`docs/escopo-e-seguranca.md`](docs/escopo-e-seguranca.md) — salvaguardas, privacidade e estágio.
 - [`docs/roteiro.md`](docs/roteiro.md) — próximos passos de revisão e validação.
-- [`docs/RETOMADA_CHATGPT.md`](docs/RETOMADA_CHATGPT.md) — estado técnico e continuidade.
-- [`legislacao/`](legislacao/) — catálogo legal e fontes oficiais.
+- [`docs/RETOMADA_CHATGPT.md`](docs/RETOMADA_CHATGPT.md) — estado de continuidade.
+- [`legislacao/`](legislacao/) — catálogo legal seletivo e fontes oficiais.

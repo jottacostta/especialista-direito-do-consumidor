@@ -8,9 +8,8 @@ secrets.*
 
 # Dependências e artefatos locais
 node_modules/
-.venv/
-venv/
-.vercel/
+dist/
+test-results/
 __pycache__/
 *.py[cod]
 .DS_Store

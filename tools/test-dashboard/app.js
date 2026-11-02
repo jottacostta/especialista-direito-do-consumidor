@@ -1,10 +1,11 @@
 (() => {
   "use strict";
 
+  const REPORT_URL = "../data/test-report.json";
   const elements = {
-    run: document.getElementById("run-tests"),
     download: document.getElementById("download-report"),
     liveStatus: document.getElementById("live-status"),
+    reportError: document.getElementById("report-error"),
     total: document.getElementById("metric-total"),
     groups: document.getElementById("metric-groups"),
     passed: document.getElementById("metric-passed"),
@@ -31,7 +32,6 @@
     skipped: "Ignorado",
     expected_failure: "Falha esperada",
     unexpected_success: "Sucesso inesperado",
-    running: "Executando",
   };
   let currentReport = null;
 
@@ -55,7 +55,17 @@
     elements.liveStatus.dataset.state = state || "";
   }
 
-  function makeMetric(test) {
+  function setReportError(message) {
+    elements.reportError.textContent = message;
+    elements.reportError.hidden = false;
+  }
+
+  function clearReportError() {
+    elements.reportError.textContent = "";
+    elements.reportError.hidden = true;
+  }
+
+  function makeTestCard(test) {
     const item = document.createElement("div");
     item.className = "test-case";
     const details = document.createElement("details");
@@ -77,8 +87,9 @@
     duration.className = "case-duration";
     duration.textContent = formatDuration(test.duration_seconds);
     const status = document.createElement("span");
-    status.className = `status-pill status-${test.outcome}`;
-    status.textContent = outcomeLabels[test.outcome] || test.outcome;
+    const outcome = outcomeLabels[test.outcome] ? test.outcome : "error";
+    status.className = `status-pill status-${outcome}`;
+    status.textContent = outcomeLabels[test.outcome] || "Resultado desconhecido";
     summary.append(title, duration, status);
 
     const body = document.createElement("div");
@@ -98,7 +109,7 @@
     } else {
       const description = document.createElement("p");
       description.className = "case-id";
-      description.textContent = `Classe: ${test.class || "não informada"}`;
+      description.textContent = "Sem detalhes adicionais.";
       body.append(description);
     }
     details.append(summary, body);
@@ -112,12 +123,12 @@
     const outcome = elements.outcome.value;
     const group = elements.group.value;
     const visible = currentReport.tests.filter((test) => {
-      const text = `${test.name} ${test.id} ${test.class} ${test.group}`.toLocaleLowerCase("pt-BR");
+      const text = `${test.name || ""} ${test.id || ""} ${test.group || ""}`.toLocaleLowerCase("pt-BR");
       return (outcome === "all" || test.outcome === outcome)
         && (group === "all" || test.group === group)
         && (!query || text.includes(query));
     });
-    elements.list.replaceChildren(...visible.map(makeMetric));
+    elements.list.replaceChildren(...visible.map(makeTestCard));
     elements.visibleCount.textContent = `${visible.length} ${visible.length === 1 ? "caso" : "casos"}`;
     elements.empty.hidden = visible.length !== 0;
   }
@@ -125,15 +136,17 @@
   function renderReport(report) {
     currentReport = report;
     const counts = report.counts || {};
+    const tests = Array.isArray(report.tests) ? report.tests : [];
+    const groups = Array.isArray(report.groups) ? report.groups : [];
     const total = Number(counts.total) || 0;
     const passed = Number(counts.passed) || 0;
     const problems = (Number(counts.failed) || 0)
       + (Number(counts.errors) || 0)
       + (Number(counts.unexpected_successes) || 0);
-    const percentage = total ? Math.round((passed / total) * 100) : 0;
+    const percentage = total ? Math.min(100, Math.max(0, Math.round((passed / total) * 100))) : 0;
 
     elements.total.textContent = String(total);
-    elements.groups.textContent = `${(report.groups || []).length} camadas de validação`;
+    elements.groups.textContent = `${groups.length} ${groups.length === 1 ? "camada de validação" : "camadas de validação"}`;
     elements.passed.textContent = String(passed);
     elements.problems.textContent = String(problems);
     elements.duration.textContent = formatDuration(report.duration_seconds);
@@ -144,9 +157,10 @@
     elements.progressFill.style.width = `${percentage}%`;
     elements.console.textContent = report.console_output || "O runner não produziu saída textual.";
     elements.download.disabled = false;
+    currentReport.tests = tests;
 
     const existingGroups = new Set(Array.from(elements.group.options, (option) => option.value));
-    for (const item of report.groups || []) {
+    for (const item of groups) {
       if (!existingGroups.has(item)) {
         const option = document.createElement("option");
         option.value = item;
@@ -156,37 +170,38 @@
     }
 
     if (report.success) {
-      setStatus(`Execução concluída: ${total} testes, todos aprovados.`, "success");
+      setStatus(`Execução concluída: ${total} testes, todos os resultados esperados.`, "success");
     } else {
-      setStatus(`Execução concluída com ${problems} falhas/erros. Abra os casos para ver o traceback.`, "error");
+      setStatus(`Execução concluída com ${problems} falhas/erros. Abra os casos para ver os detalhes.`, "error");
     }
+    clearReportError();
     applyFilters();
   }
 
-  async function loadReport() {
-    const response = await fetch("/api/report", { cache: "no-store" });
-    if (!response.ok) throw new Error(`Não foi possível carregar o relatório (HTTP ${response.status}).`);
-    renderReport(await response.json());
+  function validateReport(report) {
+    if (!report || typeof report !== "object" || !report.counts || !Array.isArray(report.tests)) {
+      throw new Error("O arquivo não segue o contrato esperado do relatório.");
+    }
   }
 
-  elements.run.addEventListener("click", async () => {
-    elements.run.disabled = true;
-    elements.download.disabled = true;
-    elements.run.querySelector(".button-icon").classList.add("spinning");
-    setStatus("Executando os testes unitários e de integração…", "running");
+  async function loadReport() {
+    setStatus("Carregando o relatório público…", "loading");
     try {
-      const response = await fetch("/api/run", { method: "POST", cache: "no-store" });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload.error || `Falha HTTP ${response.status}.`);
-      renderReport(payload);
+      const response = await fetch(REPORT_URL, { cache: "no-store" });
+      if (!response.ok) throw new Error(`arquivo não encontrado (HTTP ${response.status})`);
+      const report = await response.json();
+      validateReport(report);
+      renderReport(report);
     } catch (error) {
-      setStatus(error.message || "Não foi possível executar os testes.", "error");
-    } finally {
-      elements.run.disabled = false;
-      elements.run.querySelector(".button-icon").classList.remove("spinning");
-      elements.download.disabled = !currentReport;
+      currentReport = null;
+      elements.download.disabled = true;
+      elements.list.replaceChildren();
+      elements.visibleCount.textContent = "0 casos";
+      elements.empty.hidden = true;
+      setStatus("Relatório público indisponível. Os testes rodam no CI; consulte o workflow no GitHub.", "error");
+      setReportError(`Não foi possível carregar ${REPORT_URL}: ${error.message || "erro desconhecido"}. O relatório será exibido quando esse arquivo for publicado.`);
     }
-  });
+  }
 
   elements.download.addEventListener("click", () => {
     if (!currentReport) return;
@@ -205,5 +220,5 @@
   elements.outcome.addEventListener("change", applyFilters);
   elements.group.addEventListener("change", applyFilters);
 
-  loadReport().catch((error) => setStatus(error.message, "error"));
+  loadReport();
 })();

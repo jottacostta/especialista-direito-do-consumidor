@@ -4,7 +4,9 @@ Leia `docs/RETOMADA_CHATGPT.md`, `docs/requisitos-produto.md` e `docs/escopo-e-s
 
 ## Produto e estágio
 
-O repositório contém um protótipo web de consulta informativa ao CDC: frontend HTML/CSS/JavaScript em `public/`, API local Python em `backend/` e entrypoints file-based para Vercel em `api/`. Há também um painel dev-only de testes em `tools/test-dashboard/`, servido separadamente por `python3 -m backend.test_dashboard` e somente em `127.0.0.1`; nunca mova esse painel para `public/` ou para rotas da aplicação pública. O Vercel deploy ainda não foi criado: requer workspace/team acessível, autorização GitHub para o repo privado e proteção de implantação verificada. Não descreva a aplicação como publicada ou pronta para produção.
+O repositório está migrando para uma aplicação estática de consulta informativa ao CDC, com HTML/CSS/JavaScript em `public/`. `scripts/build-pages.mjs` valida o registro do CDC e monta em `dist/` os arquivos publicados pelo GitHub Pages. `tools/test-dashboard/` é um painel estático para o relatório gerado pelo CI. O Node.js é ferramenta de validação, build e prévia local; não há backend de aplicação, armazenamento de incidentes ou endpoint de escrita. Não reintroduza Python, Vercel, API, autenticação improvisada ou dependência de serviço externo sem nova decisão do responsável. Não descreva o site como publicado até confirmar o deploy em Pages.
+
+O repositório e o site devem ser públicos. Nunca adicionar dados reais de clientes ou trabalhadores, credenciais, segredos, históricos operacionais ou arquivos de RH. O relatório publicado também é público; mantenha-o limitado a casos de teste sintéticos e metadados técnicos necessários.
 
 ## Limites de segurança e justiça
 
@@ -12,11 +14,11 @@ Trate todo caso como incidente ou suspeita a verificar, nunca como prova de inte
 
 Não recomende discriminação, humilhação, ameaça, busca pessoal ou de pertences, retenção, detenção, força física, recusa retaliatória de venda/atendimento ou acusação pública. A decisão operacional cabe a pessoa responsável treinada, após revisão humana e oportunidade de esclarecimento respeitosa. Escale somente por procedimentos legais e de segurança definidos pela empresa.
 
-Minimize dados. O protótipo de consulta não deve coletar ou armazenar relatos de incidentes, nomes, documento, imagem, biometria, características físicas, dados sensíveis, dados de pagamento ou dados de crianças. Use dados sintéticos nos testes. Qualquer coleta real futura exige finalidade, necessidade, acesso limitado, retenção e exclusão definidos, controles de segurança e revisão profissional de privacidade e jurídica.
+Minimize dados. A consulta pública não deve coletar ou armazenar relatos de incidentes, nomes, documentos, imagens, biometria, características físicas, dados sensíveis, dados de pagamento ou dados de crianças. Use dados sintéticos nos testes. Qualquer coleta futura exige finalidade, necessidade, acesso limitado, retenção e exclusão definidos, controles de segurança e revisão profissional de privacidade e jurídica.
 
 ## Informação jurídica
 
-A consulta é informativa, não é advogado nem parecer profissional. Não invente leis, artigos, datas, vigência, decisões ou links. Para afirmações jurídicas, use fonte oficial, informe a data de verificação e separe texto legal, resumo editorial, fato e hipótese. A API deve vincular o CDC ao registro federal exato do catálogo e não servir regras se essa fonte não puder ser confirmada. Os resumos requerem revisão profissional. A auditoria catalográfica é seletiva e não exaustiva.
+A consulta é informativa, não é advogado nem parecer profissional. Não invente leis, artigos, datas, vigência, decisões ou links. Para afirmações jurídicas, use fonte oficial, informe a data de verificação e separe texto legal, resumo editorial, fato e hipótese. O build deve vincular os resumos ao registro federal exato do CDC e falhar se a fonte, o status ou a data não puderem ser confirmados. Os resumos requerem revisão profissional. A auditoria catalográfica é seletiva e não exaustiva.
 
 ## Dados legislativos
 
@@ -24,4 +26,17 @@ Siga o esquema de `legislacao/README.md`. Inclua atos normativos, não projetos 
 
 ## Fluxo Git, aplicação e validação
 
-Trabalhe em branch de tarefa baseado no `main` atualizado. Não faça push direto em `main` nem mescle PR sem autorização explícita. Preserve alterações existentes. Para os índices, execute `python3 scripts/validate_legislation.py` e `python3 scripts/validate_legislation.py --strict-duplicates`. Para a aplicação, execute `python3 -m unittest discover -s tests -v`, `python3 -m py_compile api/health.py api/rules.py backend/catalog.py backend/http_utils.py backend/server.py backend/test_dashboard.py` e `node --check public/app.js` e `node --check tools/test-dashboard/app.js`. Valide também `vercel.json` como JSON e confira que `includeFiles` inclui os dados legislativos exigidos. Não declare conformidade legal, cobertura exaustiva ou segurança de produção sem revisão e evidência documentadas.
+Trabalhe em branch de tarefa baseado no `main` atualizado. Não faça push direto em `main` nem mescle PR sem autorização explícita. Preserve alterações existentes. Use Node.js 22 ou superior e dependências padrão, sem CDNs. Antes do PR execute:
+
+```bash
+npm test
+npm run validate:catalog -- --strict-duplicates
+npm run build:pages
+node --check public/app.js
+node --check public/guide-core.js
+node --check tools/test-dashboard/app.js
+node --check scripts/serve-pages.mjs
+git diff --check
+```
+
+O site deve funcionar sob o subcaminho do projeto (`/<nome-do-repositório>/`), não usar caminhos absolutos na raiz do domínio, renderizar texto não confiável com `textContent` e validar URLs HTTPS antes de criar links. O CI só deve publicar artefato produzido com testes e catálogo aprovados. Não declare conformidade legal, cobertura exaustiva ou segurança de produção sem revisão e evidência documentadas.

@@ -1,37 +1,22 @@
-# Painel local de testes
+# Painel estático de relatório de testes
 
-O projeto inclui um painel de desenvolvimento separado da aplicação de consulta do CDC. Ele apresenta o resultado de cada caso unittest, sua camada, duração, identificador e traceback completo quando há falha. Também mostra o log original do runner, permite filtrar os resultados e baixar o relatório JSON.
+O site contém um painel de relatório em `/testes/`. Ele exibe métricas, cada caso, camada, duração, detalhes de falha, saída textual e permite baixar o JSON. A página busca `data/test-report.json` no mesmo artefato Pages.
 
-## Iniciar
+## Como o relatório é gerado
 
-Na raiz do repositório, execute:
+Os testes JavaScript rodam por `npm test`. O runner `scripts/run-tests.mjs` produz `test-results/latest.json`. `scripts/build-pages.mjs` incorpora esse arquivo em `dist/data/test-report.json`; o workflow do GitHub publica `dist/` somente depois de testes e validação do catálogo aprovados. O painel não executa testes no navegador. O link **Ver execução no GitHub Actions** abre a lista oficial de runs.
 
-```bash
-python3 -m backend.test_dashboard
-```
+Como o repositório e o site são públicos, o relatório também é público. Ele deve conter somente nomes de testes, resultados e dados sintéticos; nunca inclua identificadores de clientes/trabalhadores, credenciais ou logs operacionais. Se o CI falhar, o workflow não implanta uma nova versão. O relatório da página pode então refletir a última versão aprovada, não a execução que falhou; abra o link do Actions para ver essa execução.
 
-O servidor executa a suíte uma vez ao iniciar e mostra o relatório em `http://127.0.0.1:8765`. Use o botão **Executar novamente** para gerar um relatório atualizado. Para usar outra porta:
+## Executar e pré-visualizar localmente
 
 ```bash
-python3 -m backend.test_dashboard --port 8766
+npm test
+npm run validate:catalog -- --strict-duplicates
+npm run build:pages
+node scripts/serve-pages.mjs
 ```
 
-Encerre com `Ctrl+C`. Não é necessário instalar dependências: o painel usa Python padrão e arquivos HTML/CSS/JavaScript locais.
+A prévia fica em `http://127.0.0.1:4173/testes/`. O servidor Node local serve somente os arquivos estáticos gerados em `dist/`; não há API Python, endpoint de reexecução, cookies, armazenamento local ou coleta de dados.
 
-## Escopo e privacidade
-
-O servidor se vincula exclusivamente a `127.0.0.1`, valida host/origem local, não registra requisições e não persiste o relatório em disco. O relatório fica apenas na memória do processo; o download JSON ocorre somente quando alguém o solicita no navegador. Tracebacks podem conter caminhos locais e mensagens de erro, portanto o painel não serve arquivos do repositório nem se destina à publicação ou compartilhamento em rede.
-
-A interface fica em `tools/test-dashboard/`, fora de `public/`; o servidor principal do CDC e os handlers da Vercel não a incluem no deploy. Ela mostra o resultado da suíte local, não substitui os resultados de CI do GitHub.
-
-## Camadas exibidas
-
-Os testes são agrupados por sua origem: validação unitária do catálogo CDC, integração HTTP da API local e dos handlers Vercel, além dos testes do próprio painel. O filtro de busca aceita nome, módulo, classe ou grupo. O log bruto do `unittest` permanece disponível ao final da página.
-
-## Validação
-
-```bash
-python3 -m unittest discover -s tests -v
-python3 -m py_compile backend/test_dashboard.py
-node --check tools/test-dashboard/app.js
-```
+O relatório mantém tracebacks completos em caso de falha. Como só um build aprovado pode ser publicado, tracebacks de falhas em execuções que não passam ficam na página do GitHub Actions daquela execução, não no Pages.
