@@ -1,33 +1,34 @@
 # Retomada do projeto — para ChatGPT
 
-Atualizado em 2026-11-02. A base remota `main` estava em `c886f96` após o merge do painel local de testes no PR #3. A migração de stack está na branch local `feature/github-pages-static`, criada a partir desse commit. No momento desta atualização, as mudanças ainda não foram commitadas/enviadas e não há PR novo.
+Atualizado em 2026-11-02. A base `main` parte de `c886f96`. A migração está commitada e enviada à branch `feature/github-pages-static`, commit `20564e7`. PR #4 está aberto: https://github.com/jottacostta/especialista-direito-do-consumidor/pull/4.
 
 ## Objetivo e decisão atual
 
 O projeto visa apoiar gerentes e supervisores de supermercados na prevenção de perdas, conferência de discrepâncias e atendimento justo, sem presumir má-fé, avaliar caráter ou decidir culpa de consumidores.
 
-A pessoa responsável autorizou tornar público o repositório CDC inteiro e pediu uma aplicação no modelo estático do EscalaDominical. Também decidiu deixar de desenvolver em Python e concentrar o protótipo em HTML, CSS e JavaScript. O trabalho remove os arquivos Python de aplicação, testes e validação da árvore atual, bem como `vercel.json`; a história Git anterior ainda contém o protótipo Python. Não reescreva o histórico para removê-lo sem autorização específica.
+A pessoa responsável autorizou tornar público o repositório CDC inteiro e pediu uma aplicação no modelo estático do EscalaDominical. Também decidiu deixar de desenvolver em Python e concentrar o protótipo em HTML, CSS e JavaScript. O PR remove os arquivos Python de aplicação, testes e validação da árvore atual, bem como `vercel.json`; a história Git anterior ainda contém o protótipo Python. Não reescreva o histórico para removê-lo sem autorização específica.
 
-## Implementação preparada nesta branch
+## Implementação no PR #4
 
 - A interface HTML/CSS/JavaScript fica em `public/`, usa caminhos relativos e carrega `data/cdc-guide.json` da mesma origem.
 - `scripts/catalog-data.mjs` valida a presença exata de um registro federal da Lei nº 8.078/1990, status `vigente`, data e fontes HTTPS e regras editoriais antes de criar o bundle.
 - `scripts/validate_legislation.mjs` substitui o validador Python mantendo o schema e a opção `--strict-duplicates`.
 - `scripts/run-tests.mjs` executa casos JavaScript e gera `test-results/latest.json`; `scripts/build-pages.mjs` compõe `dist/` com o site e o painel `/testes/`.
 - `tools/test-dashboard/` é um visualizador público e estático. Não roda testes sob demanda; aponta ao GitHub Actions. O CI não publica novo Pages quando testes ou catálogo falham.
-- `.github/workflows/validate-catalog.yml` testa pull requests e prepara deploy automático pelo GitHub Pages em push aprovado na `main`.
+- `.github/workflows/validate-catalog.yml` testa pull requests e prepara deploy automático pelo GitHub Pages após aprovação em `main` ou despacho manual nessa branch.
 - O servidor Node em `scripts/serve-pages.mjs` é apenas uma prévia estática local em `127.0.0.1`; não é backend de produção.
 
-URL-alvo depois de habilitar Pages: `https://jottacostta.github.io/especialista-direito-do-consumidor/`. Painel: `/testes/`. Ainda não foi confirmado nenhum deploy. O repositório continuava privado na última inspeção, e a API de Pages retornou 403 para o conector; não afirme que o site está ativo. Após a integração aprovada, a pessoa responsável autorizou tornar o repositório público. Pode ser necessário habilitar em Settings → Pages → Build and deployment → Source: GitHub Actions; se a API do conector continuar sem permissão, pedir que o responsável faça esse ajuste.
+URL-alvo após habilitar Pages: `https://jottacostta.github.io/especialista-direito-do-consumidor/`. Painel: `/testes/`. Nenhum deploy foi confirmado. O repositório ainda está privado na última inspeção, e a API de Pages retornou 403 ao conector; não afirme que o site está ativo. A pessoa responsável autorizou tornar o repositório público após a revisão. Pode ser necessário habilitar em Settings → Pages → Build and deployment → Source: GitHub Actions; se a API do conector continuar sem permissão, pedir que o responsável faça esse ajuste.
 
-## Validações executadas na branch
+## Validações locais e estado do CI
 
-- `npm test` — 13/13 casos aprovados, cobrindo busca, validação do bundle, schema JSONL, duplicatas, build Pages e prévia HTTP.
+- `npm test` — 13/13 casos aprovados, incluindo busca, validação do bundle, schema JSONL, duplicatas, build Pages e prévia HTTP.
 - `npm run validate:catalog -- --strict-duplicates` — 16 arquivos JSONL e 229 registros, sem duplicatas; isso é validação estrutural, não auditoria jurídica automática.
 - `npm run build:pages` — gerou `dist/` com seis guias e relatório de 13/13 testes.
-- Smoke HTTP — homepage, assets CSS/JS, bundle CDC, painel, relatório JSON e rotas estáticas responderam; POST recusado com 405.
-- `node --check` e `git diff --check` — aprovados.
-- Antes da migração, uma busca por padrões conhecidos de chaves, CPF, email e nomes de arquivos sensíveis não encontrou ocorrências no snapshot nem nos 14 commits alcançáveis da base. `gitleaks` não estava instalado; a busca por padrões não é uma garantia de ausência de todo dado sensível. Repetir revisão de exposição dos novos arquivos antes de tornar o repo público.
+- Smoke HTTP — homepage, assets CSS/JS, bundle CDC, painel, relatório JSON e rotas estáticas responderam; POST recusado com 405; a suíte testa traversal e symlink externo.
+- `node --check` e `git diff --check` locais — aprovados.
+- CI inicial do PR #4 no SHA `20564e7` falhou exclusivamente em `Check diff formatting`: `actions/checkout` usou histórico raso, então a base `c886f96` não estava disponível para `git diff BASE...HEAD`. Build, testes e upload do artefato passaram; deploy foi corretamente ignorado no PR. O workflow foi corrigido com `fetch-depth: 0`; o novo commit e um novo CI ainda são necessários.
+- Uma busca limitada por padrões conhecidos de chaves, CPF, e-mail e nomes de arquivos sensíveis não encontrou ocorrências no snapshot da mudança. `gitleaks` não estava instalado; essa busca não garante ausência de todo dado sensível. Repetir revisão dos arquivos do PR antes de tornar o repo público.
 
 ## CDC e salvaguardas
 
@@ -39,12 +40,11 @@ O site e o relatório de testes serão públicos. Não incluir dados reais de cl
 
 ## Próximas etapas
 
-1. Revisar `git diff` completo e conferir que não restam comandos de execução ou dependências do runtime anterior nas instruções ativas; menções históricas ficam restritas a este handoff.
-2. Repetir testes, build, smoke HTTP e varredura de segredos/dados pessoais no conjunto final.
-3. Stagear somente a migração, commitar com assinatura Manus e publicar um PR contra `main`.
-4. Aguardar CI verde no SHA exato. Não mesclar sem autorização explícita de merge, conforme o fluxo do repositório.
-5. Depois do merge, mudar a visibilidade do repositório para público (autorizado), habilitar GitHub Pages com fonte GitHub Actions, acompanhar deploy e confirmar a URL antes de chamá-la ativa.
-6. Atualizar este arquivo e o README quando o deploy real e o estado público forem confirmados.
+1. Repetir `npm test`, validador, build e `git diff --check` no commit corretivo.
+2. Enviar o novo commit ao mesmo branch e conferir CI verde no head exato do PR #4.
+3. Não mesclar sem pedido explícito de merge e checks obrigatórios aprovados.
+4. Após o merge, mudar a visibilidade do repositório para público (autorizado), habilitar Pages com fonte GitHub Actions, acompanhar o deploy e confirmar a URL antes de chamá-la ativa.
+5. Atualizar README e esta passagem de bastão depois de confirmar a publicação real.
 
 Comandos principais:
 
@@ -52,5 +52,5 @@ Comandos principais:
 npm test
 npm run validate:catalog -- --strict-duplicates
 npm run build:pages
-node scripts/serve-pages.mjs
+npm run preview
 ```
